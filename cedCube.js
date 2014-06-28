@@ -1,15 +1,13 @@
 
-var xDelta = 0.01;
-var yDelta = 0.00;
-var zDelta = 0.00;
+var PI_2 = 3.1415926 / 2;
+var ANIMATE_INCREMENT = 0.01;
 
-var ANIMATE_INCREMENT = 0.02;
-
-var allObjects = [];
 var faceGroup;
+var allObjects = [];
 var scene = new THREE.Scene();
 
 var FRONT = {
+    name: "F",
     accept: function(x,y,z) {
         return z == 1;
     },
@@ -18,6 +16,7 @@ var FRONT = {
 };
 
 var FRONT_PRIME = {
+    name: "F'",
     accept: function(x,y,z) {
         return z == 1;
     },
@@ -26,6 +25,7 @@ var FRONT_PRIME = {
 };
 
 var RIGHT = {
+    name: "R",
     accept: function(x,y,z) {
         return x == 1;
     },
@@ -34,6 +34,7 @@ var RIGHT = {
 };
 
 var RIGHT_PRIME = {
+    name: "R'",
     accept: function(x,y,z) {
         return x == 1;
     },
@@ -42,6 +43,7 @@ var RIGHT_PRIME = {
 };
 
 var BACK = {
+    name: "B",
     accept: function(x,y,z) {
         return z == -1;
     },
@@ -50,6 +52,7 @@ var BACK = {
 };
 
 var BACK_PRIME = {
+    name: "B'",
     accept: function(x,y,z) {
         return z == -1;
     },
@@ -58,6 +61,7 @@ var BACK_PRIME = {
 };
 
 var LEFT = {
+    name: "L",
     accept: function(x,y,z) {
         return x == -1;
     },
@@ -66,6 +70,7 @@ var LEFT = {
 };
 
 var LEFT_PRIME = {
+    name: "L'",
     accept: function(x,y,z) {
         return x == -1;
     },
@@ -74,6 +79,7 @@ var LEFT_PRIME = {
 };
 
 var UP = {
+    name: "U",
     accept: function(x,y,z) {
         return y == 1;
     },
@@ -82,6 +88,7 @@ var UP = {
 };
 
 var UP_PRIME = {
+    name: "U'",
     accept: function(x,y,z) {
         return y == 1;
     },
@@ -90,6 +97,7 @@ var UP_PRIME = {
 };
 
 var DOWN = {
+    name: "D",
     accept: function(x,y,z) {
         return y == -1;
     },
@@ -98,6 +106,7 @@ var DOWN = {
 };
 
 var DOWN_PRIME = {
+    name: "D'",
     accept: function(x,y,z) {
         return y == -1;
     },
@@ -114,13 +123,16 @@ function clearScene() {
     cubes = [];
 }
 
-function addCubeToScene(scene, currentFace) {
+function addCubeToScene(scene) {
     clearScene();
     faceGroup = new THREE.Object3D();
     for (var i = -1; i <= 1; i++) {
         for (var j = -1; j <= 1; j++) {
             for (var k = -1; k <= 1; k++) {
                 var color = 0xff0000;
+                var currentFace = facesToRotate.length > 0
+                    ? facesToRotate[0]
+                    : null;
                 if (currentFace != null && currentFace.accept(i, j, k)) {
                     color = 0x0000ff;
                 }
@@ -150,56 +162,59 @@ function createOneCube(x, y, z, color) {
     return mesh;
 }
 
-var currentFace = null;
+var facesToRotate = [];
 var rotateTarget = 0;
 
-var ANIMATE_INCREMENT = 0.05;
+var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
+var renderer = new THREE.CanvasRenderer();
+
+function animate() {
+    if (rotateTarget > 0) {
+        var currentFace = facesToRotate[0];
+        console.log("Rotating " + currentFace.name);
+        rotateTarget -= ANIMATE_INCREMENT;
+        faceGroup.rotateOnAxis(currentFace.axis, ANIMATE_INCREMENT * currentFace.sign);
+        requestAnimationFrame(animate);
+    } else {
+        facesToRotate.shift();
+        if (facesToRotate.length > 0) {
+            rotateTarget = PI_2;
+        }
+        faceGroup = null;
+        addCubeToScene(scene);
+    }
+    renderer.render(scene, camera);
+}
+
+function rotateCube(face) {
+    console.log("Rotating " + face.name);
+    facesToRotate.push(face);
+    rotateTarget = PI_2;
+    addCubeToScene(scene);
+    animate();
+}
 
 document.onkeydown = function() {
     var shift = window.event.shiftKey;
     var c = window.event.keyCode;
     switch (c) {
         case 66: // b
-            currentFace = shift ? BACK_PRIME : BACK;
-            rotateTarget = 3.14/2;
-            addCubeToScene(scene, currentFace);
+            rotateCube(shift ? BACK_PRIME : BACK);
             break;
         case 68: // b
-            currentFace = shift ? DOWN_PRIME : DOWN;
-            rotateTarget = 3.14/2;
-            addCubeToScene(scene, currentFace);
+            rotateCube(shift ? DOWN_PRIME : DOWN);
             break;
         case 70: // f
-            currentFace = shift ? FRONT_PRIME : FRONT;
-            rotateTarget = 3.14/2;
-            addCubeToScene(scene, currentFace);
-            break;
-        case 72: // h
-            xDelta -= 0.01;
-            break;
-        case 75: /// k
-            xDelta += 0.01;
+            rotateCube(shift ? FRONT_PRIME : FRONT);
             break;
         case 76: /// l
-            currentFace = shift ? LEFT_PRIME : LEFT;
-            rotateTarget = 3.14/2;
-            addCubeToScene(scene, currentFace);
-            break;
-        case 73: // m
-            yDelta -= 0.01;
-            break;
-        case 77: // i
-            yDelta += 0.01;
+            rotateCube(shift ? LEFT_PRIME : LEFT);
             break;
         case 82: // r
-            currentFace = shift ? RIGHT_PRIME : RIGHT;
-            rotateTarget = 3.14/2;
-            addCubeToScene(scene, currentFace);
+            rotateCube(shift ? RIGHT_PRIME : RIGHT);
             break;
         case 85: // u
-            currentFace = shift ? UP_PRIME : UP;
-            rotateTarget = 3.14/2;
-            addCubeToScene(scene, currentFace);
+            rotateCube(shift ? UP_PRIME : UP);
             break;
         default:
             console.log("Key: " + c);
@@ -208,44 +223,24 @@ document.onkeydown = function() {
 };
 
 function runCube() {
-    var camera, renderer;
-    var colors = [ 0xff0000, 0x00ff00, 0x0000ff];
+    camera.position.z = 500;
 
-    init();
-    animate();
+//    addCubeToScene(scene, null);
 
-    function init() {
-        camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
-        camera.position.z = 500;
+    renderer.setSize( window.innerWidth, window.innerHeight );
 
-        addCubeToScene(scene, null);
+    document.body.appendChild( renderer.domElement );
 
-        renderer = new THREE.CanvasRenderer();
-        renderer.setSize( window.innerWidth, window.innerHeight );
-
-        document.body.appendChild( renderer.domElement );
-
-    }
-
-    function animate() {
-        if (faceGroup.children.length > 0) {
-            if (rotateTarget > 0) {
-                rotateTarget -= ANIMATE_INCREMENT;
-                var axis = currentFace.axis;
-                //            rad += radIncrement;
-                faceGroup.rotateOnAxis(axis, ANIMATE_INCREMENT * currentFace.sign);
-//                console.log("Rotation: " + faceGroup.rotation.x
-//                    + "," + faceGroup.rotation.y
-//                    + "," + faceGroup.rotation.z);
-
-                //            faceGroup.rotation.x += xDelta;
-                //            faceGroup.rotation.y += yDelta;
-            } else {
-                faceGroup = null;
-                addCubeToScene(scene, null);
-            }
-        }
-        requestAnimationFrame( animate );
-        renderer.render( scene, camera );
-    }
+    rotateCube(FRONT);
+    rotateCube(UP);
+    rotateCube(RIGHT);
+    rotateCube(FRONT_PRIME);
+    rotateCube(UP_PRIME);
+    rotateCube(RIGHT_PRIME);
+    rotateCube(FRONT);
+    rotateCube(UP);
+    rotateCube(RIGHT);
+    rotateCube(FRONT_PRIME);
+    rotateCube(UP_PRIME);
+    rotateCube(RIGHT_PRIME);
 }
