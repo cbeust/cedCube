@@ -126,18 +126,15 @@ function clearScene() {
 function addCubeToScene(scene) {
     clearScene();
     faceGroup = new THREE.Object3D();
-    for (var i = -1; i <= 1; i++) {
-        for (var j = -1; j <= 1; j++) {
-            for (var k = -1; k <= 1; k++) {
-                var color = 0xff0000;
+    var cubitIndex = 0;
+    for (var z = -1; z <= 1; z++) {
+        for (var y = 1; y >= -1; y--) {
+            for (var x = -1; x <= 1; x++) {
                 var currentFace = facesToRotate.length > 0
                     ? facesToRotate[0]
                     : null;
-                if (currentFace != null && currentFace.accept(i, j, k)) {
-                    color = 0x0000ff;
-                }
-                var cube = createOneCube(i * 100, j * 100, k * 100, color);
-                if (currentFace != null && currentFace.accept(i, j, k)) {
+                var cube = createOneCubit(x * 100, y * 100, z * 100, cubitIndex++);
+                if (currentFace != null && currentFace.accept(x, y, z)) {
                     faceGroup.add(cube);
                 } else {
                     scene.add(cube);
@@ -151,15 +148,38 @@ function addCubeToScene(scene) {
         allObjects.push(faceGroup);
     }
 
+    renderer.render(scene, camera);
+
     console.log("All objects: " + allObjects.length);
 }
 
-function createOneCube(x, y, z, color) {
-    var geometry = new THREE.BoxGeometry(50, 50, 50);
-    var material = new THREE.MeshBasicMaterial( { color: color, wireframe: true } );
-    var mesh = new THREE.Mesh( geometry, material );
-    mesh.position = new THREE.Vector3(x, y, z);
-    return mesh;
+var W = 0xffffff;
+var B = 0x00ff00;
+var Y = 0xffff00;
+var G = 0x00ff00;
+var O = 0xff8c00;
+var R = 0xff0000;
+var X = 0x888888;
+
+function getMaterialArray(cubitIndex) {
+    var array = [];
+    // order to add materials: x+,x-,y+,y-,z+,z-
+    array.push( new THREE.MeshBasicMaterial( { color: X } ) );
+    array.push( new THREE.MeshBasicMaterial( { color: G } ) );
+    array.push( new THREE.MeshBasicMaterial( { color: O } ) );
+    array.push( new THREE.MeshBasicMaterial( { color: X } ) );
+    array.push( new THREE.MeshBasicMaterial( { color: W } ) );
+    array.push( new THREE.MeshBasicMaterial( { color: X } ) );
+    return new THREE.MeshFaceMaterial( array );
+}
+
+function createOneCubit(x, y, z, cubitIndex) {
+//    console.log("Creating cubit " + cubitIndex  + " " + x + "," + y + "," + z);
+    var cubeMaterials = getMaterialArray(cubitIndex);
+    var cubeGeometry = new THREE.BoxGeometry(50, 50, 50);
+    cube = new THREE.Mesh(cubeGeometry, cubeMaterials);
+    cube.position = new THREE.Vector3(x, y, z);
+    return cube;
 }
 
 var facesToRotate = [];
@@ -173,17 +193,15 @@ var lastTime = 0;
 function animate() {
     if (rotateTarget > 0) {
         var currentFace = facesToRotate[0];
-        console.log("Rotating " + currentFace.name);
         var delta = new Date().getTime() - lastTime;
-        // delta 20 -> increment .02
-        // delta 30 -> increment .03
-        var increment = delta / 300;
+        var increment = lastTime == 0 ? 0.02 : delta / 300;
         rotateTarget -= increment;
         faceGroup.rotateOnAxis(currentFace.axis, increment * currentFace.sign);
         lastTime = new Date().getTime();
         requestAnimationFrame(animate);
     } else {
         facesToRotate.shift();
+        lastTime = 0;
         if (facesToRotate.length > 0) {
             rotateTarget = PI_2;
         }
@@ -230,23 +248,21 @@ document.onkeydown = function() {
 
 function runCube() {
     camera.position.z = 500;
-
-//    addCubeToScene(scene, null);
-
-    renderer.setSize( window.innerWidth, window.innerHeight );
+    renderer.setSize(window.innerWidth, window.innerHeight);
 
     document.body.appendChild( renderer.domElement );
 
+    addCubeToScene(scene, null);
     rotateCube(FRONT);
-    rotateCube(UP);
-    rotateCube(RIGHT);
-    rotateCube(FRONT_PRIME);
-    rotateCube(UP_PRIME);
-    rotateCube(RIGHT_PRIME);
-    rotateCube(FRONT);
-    rotateCube(UP);
-    rotateCube(RIGHT);
-    rotateCube(FRONT_PRIME);
-    rotateCube(UP_PRIME);
-    rotateCube(RIGHT_PRIME);
+//    rotateCube(UP);
+//    rotateCube(RIGHT);
+//    rotateCube(FRONT_PRIME);
+//    rotateCube(UP_PRIME);
+//    rotateCube(RIGHT_PRIME);
+//    rotateCube(FRONT);
+//    rotateCube(UP);
+//    rotateCube(RIGHT);
+//    rotateCube(FRONT_PRIME);
+//    rotateCube(UP_PRIME);
+//    rotateCube(RIGHT_PRIME);
 }
