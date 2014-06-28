@@ -168,19 +168,25 @@ var rotateTarget = 0;
 var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
 var renderer = new THREE.CanvasRenderer();
 
+var lastTime = 0;
+
 function animate() {
     if (rotateTarget > 0) {
         var currentFace = facesToRotate[0];
         console.log("Rotating " + currentFace.name);
-        rotateTarget -= ANIMATE_INCREMENT;
-        faceGroup.rotateOnAxis(currentFace.axis, ANIMATE_INCREMENT * currentFace.sign);
+        var delta = new Date().getTime() - lastTime;
+        // delta 20 -> increment .02
+        // delta 30 -> increment .03
+        var increment = delta / 300;
+        rotateTarget -= increment;
+        faceGroup.rotateOnAxis(currentFace.axis, increment * currentFace.sign);
+        lastTime = new Date().getTime();
         requestAnimationFrame(animate);
     } else {
         facesToRotate.shift();
         if (facesToRotate.length > 0) {
             rotateTarget = PI_2;
         }
-        faceGroup = null;
         addCubeToScene(scene);
     }
     renderer.render(scene, camera);
