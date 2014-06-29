@@ -1,8 +1,13 @@
-
-var PI_2 = 3.1415926 / 2;
+var PI_2 = Math.PI / 2;
 var ANIMATE_INCREMENT = 0.01;
 
-var faceGroup;
+var X_AXIS = new THREE.Vector3(1, 0, 0);
+var X_AXIS_NEG = new THREE.Vector3(-1, 0, 0);
+var Y_AXIS = new THREE.Vector3(0, 1, 0);
+var Y_AXIS_NEG = new THREE.Vector3(0, -1, 0);
+var Z_AXIS = new THREE.Vector3(0, 0, 1);
+var Z_AXIS_NEG = new THREE.Vector3(0, 0, -1);
+
 var allObjects = [];
 var scene = new THREE.Scene();
 
@@ -11,8 +16,10 @@ var FRONT = {
     accept: function(x,y,z) {
         return z == 1;
     },
-    axis: new THREE.Vector3(0, 0, 1),
-    sign: -1
+    axis: Z_AXIS_NEG,
+    cubits: [ 0, 1, 2, 3, 4, 5, 6, 7, 8],
+    newOrder: [6, 3, 0, 7, 4, 1, 8, 5, 2, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
+        23, 24, 25, 26]
 };
 
 var FRONT_PRIME = {
@@ -20,8 +27,10 @@ var FRONT_PRIME = {
     accept: function(x,y,z) {
         return z == 1;
     },
-    axis: new THREE.Vector3(0, 0, 1),
-    sign: 1
+    axis: Z_AXIS,
+    cubits: [ 0, 1, 2, 3, 4, 5, 6, 7, 8],
+    newOrder: [2, 5, 8, 1, 4, 7, 0, 3, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
+        23, 24, 25, 26]
 };
 
 var RIGHT = {
@@ -29,8 +38,10 @@ var RIGHT = {
     accept: function(x,y,z) {
         return x == 1;
     },
-    axis: new THREE.Vector3(1, 0, 0),
-    sign: -1
+    axis: X_AXIS_NEG,
+    cubits: [ 2, 5, 8, 11, 14, 17, 20, 23, 26 ],
+    newOrder: [0, 1, 8, 3, 4, 17, 6, 7, 26, 9, 10, 5, 12, 13, 14, 15, 16, 23, 18, 19, 2, 21, 22,
+        11, 24, 25, 20 ]
 };
 
 var RIGHT_PRIME = {
@@ -38,8 +49,10 @@ var RIGHT_PRIME = {
     accept: function(x,y,z) {
         return x == 1;
     },
-    axis: new THREE.Vector3(1, 0, 0),
-    sign: 1
+    axis: X_AXIS,
+    cubits: [ 2, 5, 8, 11, 14, 17, 20, 23, 26 ],
+    newOrder: [0, 1, 20, 3, 4, 11, 6, 7, 2, 9, 10, 23, 12, 13, 14, 15, 16, 5, 18, 19, 26, 21, 22,
+        17, 24, 25, 8 ]
 };
 
 var BACK = {
@@ -47,8 +60,10 @@ var BACK = {
     accept: function(x,y,z) {
         return z == -1;
     },
-    axis: new THREE.Vector3(0, 0, 1),
-    sign: 1
+    axis: Z_AXIS,
+    cubits: [ 18, 19, 20, 21, 22, 23, 24, 25, 26 ],
+    newOrder: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 21, 24, 26, 19, 22, 25,
+        18, 21, 24 ]
 };
 
 var BACK_PRIME = {
@@ -56,8 +71,10 @@ var BACK_PRIME = {
     accept: function(x,y,z) {
         return z == -1;
     },
-    axis: new THREE.Vector3(0, 0, 1),
-    sign: -1
+    axis: Z_AXIS,
+    cubits: [ 18, 19, 20, 21, 22, 23, 24, 25, 26 ],
+    newOrder: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 24, 21, 18, 25, 22, 19,
+        26, 23, 20 ]
 };
 
 var LEFT = {
@@ -65,8 +82,11 @@ var LEFT = {
     accept: function(x,y,z) {
         return x == -1;
     },
-    axis: new THREE.Vector3(1, 0, 0),
-    sign: 1
+    axis: X_AXIS,
+    cubits: [ 0, 3, 6, 9, 12, 15, 18, 21, 24 ],
+    newOrder: [18, 1, 2, 9, 4, 5, 0, 7, 8,
+        21, 10, 11, 12, 13, 14, 3, 16, 17,
+        24, 19, 20, 15, 22, 23, 6, 25, 26 ]
 };
 
 var LEFT_PRIME = {
@@ -74,8 +94,11 @@ var LEFT_PRIME = {
     accept: function(x,y,z) {
         return x == -1;
     },
-    axis: new THREE.Vector3(1, 0, 0),
-    sign: -1
+    axis: X_AXIS,
+    cubits: [ 0, 3, 6, 9, 12, 15, 18, 21, 24 ],
+    newOrder: [6, 1, 2, 15, 4, 5, 24, 7, 8,
+        3, 10, 11, 12, 13, 14, 21, 16, 17,
+        0, 19, 20, 9, 22, 23, 18, 25, 26 ]
 };
 
 var UP = {
@@ -83,8 +106,11 @@ var UP = {
     accept: function(x,y,z) {
         return y == 1;
     },
-    axis: new THREE.Vector3(0, 1, 0),
-    sign: -1
+    axis: Y_AXIS,
+    cubits: [ 0, 1, 2, 9, 10, 11, 18, 19, 20 ],
+    newOrder: [ 2, 11, 20, 3, 4, 5, 6, 7, 8,
+        1, 10, 19, 12, 13, 14, 15, 16, 17,
+        6, 3, 0, 21, 22, 23, 24, 25, 26 ]
 };
 
 var UP_PRIME = {
@@ -92,8 +118,11 @@ var UP_PRIME = {
     accept: function(x,y,z) {
         return y == 1;
     },
-    axis: new THREE.Vector3(0, 1, 0),
-    sign: 1
+    axis: Y_AXIS,
+    cubits: [ 0, 1, 2, 9, 10, 11, 18, 19, 20 ],
+    newOrder: [ 18, 9, 0, 3, 4, 5, 6, 7, 8,
+        19, 10, 1, 12, 13, 14, 15, 16, 17,
+        20, 11, 2, 21, 22, 23, 24, 25, 26 ]
 };
 
 var DOWN = {
@@ -101,8 +130,11 @@ var DOWN = {
     accept: function(x,y,z) {
         return y == -1;
     },
-    axis: new THREE.Vector3(0, 1, 0),
-    sign: 1
+    axis: Y_AXIS,
+    cubits: [ 5, 6, 7, 15, 16, 17, 24, 25, 26 ],
+    newOrder: [0, 1, 2, 3, 4, 5, 24, 15, 6,
+        9, 10, 11, 12, 13, 14, 25, 16, 7,
+        18, 19, 20, 21, 22, 23, 26, 17, 8 ]
 };
 
 var DOWN_PRIME = {
@@ -110,8 +142,11 @@ var DOWN_PRIME = {
     accept: function(x,y,z) {
         return y == -1;
     },
-    axis: new THREE.Vector3(0, 1, 0),
-    sign: -1
+    axis: Y_AXIS,
+    cubits: [ 5, 6, 7, 15, 16, 17, 24, 25, 26 ],
+    newOrder: [ 0, 1, 2, 3, 4, 5, 8, 17, 26,
+        9, 10, 11, 12, 13, 14, 7, 16, 25,
+        18, 19, 20, 21, 22, 23, 6, 15, 24 ]
 };
 
 function clearScene() {
@@ -123,33 +158,26 @@ function clearScene() {
     cubes = [];
 }
 
+var CUBITS = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26];
+//var CUBITS = [
+//    2, 11, 20, 3, 4, 5, 6, 7, 8,
+//    1, 10, 19, 12, 13, 14, 15, 16, 17,
+//    0, 9, 18, 21, 22, 23, 24, 25, 26
+//];
+
 function addCubeToScene(scene) {
     clearScene();
-    faceGroup = new THREE.Object3D();
     var cubitIndex = 0;
     for (var z = 1; z >= -1; z--) {
         for (var y = 1; y >= -1; y--) {
             for (var x = -1; x <= 1; x++) {
-                var currentFace = facesToRotate.length > 0
-                    ? facesToRotate[0]
-                    : null;
-                var cube = createOneCubit(x * 100, y * 100, z * 100, cubitIndex++);
-                if (currentFace != null && currentFace.accept(x, y, z)) {
-                    faceGroup.add(cube);
-                } else {
-                    scene.add(cube);
-                    allObjects.push(cube);
-                }
+                var cube = createOneCubit(x * 100, y * 100, z * 100, CUBITS[cubitIndex++]);
+                scene.add(cube);
+                allObjects.push(cube);
             }
         }
     }
-    if (faceGroup.children.length > 0) {
-        scene.add(faceGroup);
-        allObjects.push(faceGroup);
-    }
-
     renderer.render(scene, camera);
-
     console.log("All objects: " + allObjects.length);
 }
 
@@ -263,8 +291,8 @@ var CUBIT_COLOR_INDICES = [
         expected: ".by..."
     },
     {
-        indices: [ -1, -1, 26, 33, -1, -1 ],
-        expected: "..yg.."
+        indices: [ -1, -1, 26, 33, -1, 53 ],
+        expected: "..yg.r"
     },
     {
         indices: [ -1, -1, 25, -1, -1, 52 ],
@@ -330,22 +358,59 @@ var renderer = new THREE.CanvasRenderer();
 
 var lastTime = 0;
 
-function animate() {
+/**
+ * @return the scene objects for the given face.
+ */
+function getCubesForFace(face) {
+    var result = [];
+    var cubitIndices = face.cubits;
+    for (var i = 0; i < cubitIndices.length; i++) {
+        var ci = cubitIndices[i];
+        result.push(allObjects[ci]);
+    }
+    return result;
+}
+
+    function animate() {
     if (rotateTarget > 0) {
+        // Still rotating
         var currentFace = facesToRotate[0];
         var delta = new Date().getTime() - lastTime;
         var increment = lastTime == 0 ? 0.02 : delta / 300;
         rotateTarget -= increment;
-        faceGroup.rotateOnAxis(currentFace.axis, increment * currentFace.sign);
+
+//        faceGroup.rotateOnAxis(currentFace.axis, increment * currentFace.sign);
+        var objects = getCubesForFace(currentFace);
+        var matrix = new THREE.Matrix4().makeRotationAxis(currentFace.axis, increment);
+        for (var i = 0; i < objects.length; i++) {
+            objects[i].applyMatrix(matrix);
+//            renderer.render(scene, camera);
+        }
+
         lastTime = new Date().getTime();
         requestAnimationFrame(animate);
     } else {
+        // Done rotating
+        var currentFace = facesToRotate[0];
+        var cubitIndices = currentFace.cubits;
+        for (var i = 0; i < cubitIndices.length; i++) {
+        }
+
+        var newObjects = [];
+        if (currentFace.newOrder.length != 27) {
+            alert("Wrong newOrder");
+        }
+        for (var i = 0; i < currentFace.newOrder.length; i++) {
+            console.log("index " + i + " becomes " + currentFace.newOrder[i]);
+            newObjects[i] = allObjects[currentFace.newOrder[i]];
+        }
+        allObjects = newObjects;
+
         facesToRotate.shift();
         lastTime = 0;
         if (facesToRotate.length > 0) {
             rotateTarget = PI_2;
         }
-        addCubeToScene(scene);
     }
     renderer.render(scene, camera);
 }
@@ -354,7 +419,7 @@ function rotateCube(face) {
     console.log("Rotating " + face.name);
     facesToRotate.push(face);
     rotateTarget = PI_2;
-    addCubeToScene(scene);
+//    addCubeToScene(scene);
     animate();
 }
 
@@ -402,28 +467,118 @@ function testCubitColors() {
     console.log(CUBIT_COLOR_INDICES.length + " tests done");
 }
 
-testCubitColors();
+//testCubitColors();
 
 function runCube() {
-    camera.position.x = 150;
-    camera.position.y = 200;
+
+    addCubeToScene(scene);
+//    rotateCube(FRONT);
+//    rotateCube(UP);
+//    rotateCube(RIGHT);
+//    rotateCube(FRONT_PRIME);
+//    rotateCube(UP_PRIME);
+//    rotateCube(RIGHT_PRIME);
+//    rotateCube(FRONT);
+//    rotateCube(UP);
+//    rotateCube(RIGHT);
+//    rotateCube(FRONT_PRIME);
+//    rotateCube(UP_PRIME);
+//    rotateCube(RIGHT_PRIME);
+}
+
+function test() {
+    var material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
+//    {
+//        var pivot1 = new THREE.Object3D();
+//        var geometry =  new THREE.BoxGeometry( 40, 40, 40);
+//        var cube = new THREE.Mesh(geometry, material);
+//        cube.position.x = 50;
+//        pivot1.add(cube);
+//        scene.add(pivot1);
+//    }
+
+    var geometry =  new THREE.BoxGeometry( 40, 40, 40);
+    cube = new THREE.Mesh(geometry, material);
+    cube.position.x = 50;
+    scene.add(cube);
+    renderer.render(scene, camera);
+
+    var rotWorldMatrix;
+// Rotate an object around an arbitrary axis in world space
+    function rotateAroundWorldAxis(object, axis, radians) {
+        rotWorldMatrix = new THREE.Matrix4();
+        rotWorldMatrix.makeRotationAxis(axis.normalize(), radians);
+
+        // old code for Three.JS pre r54:
+        //  rotWorldMatrix.multiply(object.matrix);
+        // new code for Three.JS r55+:
+        rotWorldMatrix.multiply(object.matrix);                // pre-multiply
+
+        object.matrix = rotWorldMatrix;
+
+        // old code for Three.js pre r49:
+        // object.rotation.getRotationFromMatrix(object.matrix, object.scale);
+        // old code for Three.js pre r59:
+        // object.rotation.setEulerFromRotationMatrix(object.matrix);
+        // code for r59+:
+        object.rotation.setFromRotationMatrix(object.matrix);
+    }
+
+    // Rotate an object around an arbitrary axis in object space
+    var rotObjectMatrix;
+    function rotateAroundObjectAxis(object, axis, radians) {
+        rotObjectMatrix = new THREE.Matrix4();
+        rotObjectMatrix.makeRotationAxis(axis.normalize(), radians);
+
+        // old code for Three.JS pre r54:
+        // object.matrix.multiplySelf(rotObjectMatrix);      // post-multiply
+        // new code for Three.JS r55+:
+        object.matrix.multiply(rotObjectMatrix);
+
+        // old code for Three.js pre r49:
+        // object.rotation.getRotationFromMatrix(object.matrix, object.scale);
+        // new code for Three.js r50+:
+        object.rotation.setEulerFromRotationMatrix(object.matrix);
+    }
+
+    count = 0;
+
+    var animate = function() {
+        var axis = count % 200 < 100 ? new THREE.Vector3(0,1,0) : new THREE.Vector3(0,0,1);
+//        console.log("Count: " + count + " " + axis.x + "," + axis.y + "," + axis.z);
+//        axis = new THREE.Vector3(0,1,0);
+        count++;
+        var matrix = new THREE.Matrix4().makeRotationAxis( axis, 0.01 );
+        cube.applyMatrix( matrix );
+//        rotateAroundObjectAxis(cube, new THREE.Vector3(0,0,10), 0.01);
+//        pivot1.rotation.z += 0.01;
+
+        renderer.render(scene, camera);
+        requestAnimationFrame(animate);
+    }
+    requestAnimationFrame(animate);
+
+}
+
+function run() {
+
+    camera.position.x = 50;
+    camera.position.y = 50;
     camera.position.z = 500;
     camera.lookAt(new THREE.Vector3(0, 0, 0));
     renderer.setSize(window.innerWidth, window.innerHeight);
+//    renderer.setClearColorHex(0x333F47, 1);
 
     document.body.appendChild( renderer.domElement );
 
-    addCubeToScene(scene, null);
-//    rotateCube(FRONT);
-//    rotateCube(UP);
-//    rotateCube(RIGHT);
-//    rotateCube(FRONT_PRIME);
-//    rotateCube(UP_PRIME);
-//    rotateCube(RIGHT_PRIME);
-//    rotateCube(FRONT);
-//    rotateCube(UP);
-//    rotateCube(RIGHT);
-//    rotateCube(FRONT_PRIME);
-//    rotateCube(UP_PRIME);
-//    rotateCube(RIGHT_PRIME);
+    var axes2 = new THREE.AxisHelper( 1000);
+    scene.add(axes2);
+
+    var controls = new THREE.OrbitControls(camera, renderer.domElement)
+
+//    test();
+    runCube();
+
+    renderer.render(scene, camera);
+    controls.update();
 }
