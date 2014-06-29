@@ -62,8 +62,9 @@ var BACK = {
     },
     axis: Z_AXIS,
     cubits: [ 18, 19, 20, 21, 22, 23, 24, 25, 26 ],
-    newOrder: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 21, 24, 26, 19, 22, 25,
-        18, 21, 24 ]
+    newOrder: [0, 1, 2, 3, 4, 5, 6, 7, 8,
+        9, 10, 11, 12, 13, 14, 15, 16, 17,
+        20, 23, 26, 19, 22, 25, 18, 21, 24 ]
 };
 
 var BACK_PRIME = {
@@ -71,10 +72,11 @@ var BACK_PRIME = {
     accept: function(x,y,z) {
         return z == -1;
     },
-    axis: Z_AXIS,
+    axis: Z_AXIS_NEG,
     cubits: [ 18, 19, 20, 21, 22, 23, 24, 25, 26 ],
-    newOrder: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 15, 16, 17, 24, 21, 18, 25, 22, 19,
-        26, 23, 20 ]
+    newOrder: [0, 1, 2, 3, 4, 5, 6, 7, 8,
+        9, 10, 11, 12, 13, 14, 15, 16, 17,
+        24, 21, 18, 25, 22, 19, 26, 23, 20 ]
 };
 
 var LEFT = {
@@ -82,7 +84,7 @@ var LEFT = {
     accept: function(x,y,z) {
         return x == -1;
     },
-    axis: X_AXIS,
+    axis: X_AXIS_NEG,
     cubits: [ 0, 3, 6, 9, 12, 15, 18, 21, 24 ],
     newOrder: [18, 1, 2, 9, 4, 5, 0, 7, 8,
         21, 10, 11, 12, 13, 14, 3, 16, 17,
@@ -106,11 +108,11 @@ var UP = {
     accept: function(x,y,z) {
         return y == 1;
     },
-    axis: Y_AXIS,
+    axis: Y_AXIS_NEG,
     cubits: [ 0, 1, 2, 9, 10, 11, 18, 19, 20 ],
     newOrder: [ 2, 11, 20, 3, 4, 5, 6, 7, 8,
         1, 10, 19, 12, 13, 14, 15, 16, 17,
-        6, 3, 0, 21, 22, 23, 24, 25, 26 ]
+        0, 9, 18, 21, 22, 23, 24, 25, 26 ]
 };
 
 var UP_PRIME = {
@@ -130,8 +132,8 @@ var DOWN = {
     accept: function(x,y,z) {
         return y == -1;
     },
-    axis: Y_AXIS,
-    cubits: [ 5, 6, 7, 15, 16, 17, 24, 25, 26 ],
+    axis: Y_AXIS_NEG,
+    cubits: [ 6, 7, 8, 15, 16, 17, 24, 25, 26 ],
     newOrder: [0, 1, 2, 3, 4, 5, 24, 15, 6,
         9, 10, 11, 12, 13, 14, 25, 16, 7,
         18, 19, 20, 21, 22, 23, 26, 17, 8 ]
@@ -143,7 +145,7 @@ var DOWN_PRIME = {
         return y == -1;
     },
     axis: Y_AXIS,
-    cubits: [ 5, 6, 7, 15, 16, 17, 24, 25, 26 ],
+    cubits: [ 6, 7, 8, 15, 16, 17, 24, 25, 26 ],
     newOrder: [ 0, 1, 2, 3, 4, 5, 8, 17, 26,
         9, 10, 11, 12, 13, 14, 7, 16, 25,
         18, 19, 20, 21, 22, 23, 6, 15, 24 ]
@@ -267,8 +269,8 @@ var CUBIT_COLOR_INDICES = [
         expected: ".b...r"
     },
     {
-        indices: [ -1, -1, 20, 27, 36 ],
-        expected: "..ygo"
+        indices: [ -1, -1, 20, 27, 36, -1 ],
+        expected: "..ygo."
     },
     {
         indices: [ -1, -1, 19, -1, 37, -1 ],
@@ -392,8 +394,10 @@ function getCubesForFace(face) {
     } else {
         // Done rotating
         var currentFace = facesToRotate[0];
-        var cubitIndices = currentFace.cubits;
-        for (var i = 0; i < cubitIndices.length; i++) {
+        var objects = getCubesForFace(currentFace);
+        for (var i = 0; i < objects.length; i++) {
+            var r = objects[i].rotation;
+            console.log("Rotation: " + r.x + "," + r.y + "," + r.z);
         }
 
         var newObjects = [];
@@ -401,7 +405,6 @@ function getCubesForFace(face) {
             alert("Wrong newOrder");
         }
         for (var i = 0; i < currentFace.newOrder.length; i++) {
-            console.log("index " + i + " becomes " + currentFace.newOrder[i]);
             newObjects[i] = allObjects[currentFace.newOrder[i]];
         }
         allObjects = newObjects;
