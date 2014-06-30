@@ -18,9 +18,6 @@ var colorString = "wwwwwwwwwbbbbbbbbbyyyyyyyyygggggggggooooooooorrrrrrrrr";
 
 var FRONT = {
     name: "F",
-    accept: function(x,y,z) {
-        return z == 1;
-    },
     axis: Z_AXIS_NEG,
     cubits: [ 0, 1, 2, 3, 4, 5, 6, 7, 8],
     newOrder: [6, 3, 0, 7, 4, 1, 8, 5, 2, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
@@ -29,9 +26,6 @@ var FRONT = {
 
 var FRONT_PRIME = {
     name: "F'",
-    accept: function(x,y,z) {
-        return z == 1;
-    },
     axis: Z_AXIS,
     cubits: [ 0, 1, 2, 3, 4, 5, 6, 7, 8],
     newOrder: [2, 5, 8, 1, 4, 7, 0, 3, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
@@ -40,9 +34,6 @@ var FRONT_PRIME = {
 
 var RIGHT = {
     name: "R",
-    accept: function(x,y,z) {
-        return x == 1;
-    },
     axis: X_AXIS_NEG,
     cubits: [ 2, 5, 8, 11, 14, 17, 20, 23, 26 ],
     newOrder: [0, 1, 8, 3, 4, 17, 6, 7, 26, 9, 10, 5, 12, 13, 14, 15, 16, 23, 18, 19, 2, 21, 22,
@@ -51,9 +42,6 @@ var RIGHT = {
 
 var RIGHT_PRIME = {
     name: "R'",
-    accept: function(x,y,z) {
-        return x == 1;
-    },
     axis: X_AXIS,
     cubits: [ 2, 5, 8, 11, 14, 17, 20, 23, 26 ],
     newOrder: [0, 1, 20, 3, 4, 11, 6, 7, 2, 9, 10, 23, 12, 13, 14, 15, 16, 5, 18, 19, 26, 21, 22,
@@ -62,9 +50,6 @@ var RIGHT_PRIME = {
 
 var BACK = {
     name: "B",
-    accept: function(x,y,z) {
-        return z == -1;
-    },
     axis: Z_AXIS,
     cubits: [ 18, 19, 20, 21, 22, 23, 24, 25, 26 ],
     newOrder: [0, 1, 2, 3, 4, 5, 6, 7, 8,
@@ -74,9 +59,6 @@ var BACK = {
 
 var BACK_PRIME = {
     name: "B'",
-    accept: function(x,y,z) {
-        return z == -1;
-    },
     axis: Z_AXIS_NEG,
     cubits: [ 18, 19, 20, 21, 22, 23, 24, 25, 26 ],
     newOrder: [0, 1, 2, 3, 4, 5, 6, 7, 8,
@@ -86,9 +68,6 @@ var BACK_PRIME = {
 
 var LEFT = {
     name: "L",
-    accept: function(x,y,z) {
-        return x == -1;
-    },
     axis: X_AXIS,
     cubits: [ 0, 3, 6, 9, 12, 15, 18, 21, 24 ],
     newOrder: [18, 1, 2, 9, 4, 5, 0, 7, 8,
@@ -98,9 +77,6 @@ var LEFT = {
 
 var LEFT_PRIME = {
     name: "L'",
-    accept: function(x,y,z) {
-        return x == -1;
-    },
     axis: X_AXIS_NEG,
     cubits: [ 0, 3, 6, 9, 12, 15, 18, 21, 24 ],
     newOrder: [6, 1, 2, 15, 4, 5, 24, 7, 8,
@@ -110,9 +86,6 @@ var LEFT_PRIME = {
 
 var UP = {
     name: "U",
-    accept: function(x,y,z) {
-        return y == 1;
-    },
     axis: Y_AXIS_NEG,
     cubits: [ 0, 1, 2, 9, 10, 11, 18, 19, 20 ],
     newOrder: [ 2, 11, 20, 3, 4, 5, 6, 7, 8,
@@ -122,9 +95,6 @@ var UP = {
 
 var UP_PRIME = {
     name: "U'",
-    accept: function(x,y,z) {
-        return y == 1;
-    },
     axis: Y_AXIS,
     cubits: [ 0, 1, 2, 9, 10, 11, 18, 19, 20 ],
     newOrder: [ 18, 9, 0, 3, 4, 5, 6, 7, 8,
@@ -134,9 +104,6 @@ var UP_PRIME = {
 
 var DOWN = {
     name: "D",
-    accept: function(x,y,z) {
-        return y == -1;
-    },
     axis: Y_AXIS_NEG,
     cubits: [ 6, 7, 8, 15, 16, 17, 24, 25, 26 ],
     newOrder: [0, 1, 2, 3, 4, 5, 24, 15, 6,
@@ -146,9 +113,6 @@ var DOWN = {
 
 var DOWN_PRIME = {
     name: "D'",
-    accept: function(x,y,z) {
-        return y == -1;
-    },
     axis: Y_AXIS,
     cubits: [ 6, 7, 8, 15, 16, 17, 24, 25, 26 ],
     newOrder: [ 0, 1, 2, 3, 4, 5, 8, 17, 26,
