@@ -16,6 +16,8 @@ var scene = new THREE.Scene();
 var colorString = "wwwwwwwwwbbbbbbbbbyyyyyyyyygggggggggooooooooorrrrrrrrr";
 //var colorString = "wwwwwwwwwbbbbbbbbbyyyyyyyyygggggggggwbygowrwwrrrrrrrrr";
 
+var controls;
+
 var FRONT = {
     name: "F",
     axis: Z_AXIS_NEG,
@@ -129,13 +131,15 @@ function clearScene() {
     cubes = [];
 }
 
+var W = 100;
+
 function addCubeToScene(scene) {
     clearScene();
     var cubitIndex = 0;
     for (var z = 1; z >= -1; z--) {
         for (var y = 1; y >= -1; y--) {
             for (var x = -1; x <= 1; x++) {
-                var cube = createOneCubit(x * 100, y * 100, z * 100, WORLD[cubitIndex++]);
+                var cube = createOneCubit(x * W, y * W, z * W, WORLD[cubitIndex++]);
                 scene.add(cube);
                 ALL_OBJECTS.push(cube);
             }
@@ -303,10 +307,12 @@ function getMaterialArray(cubitIndex) {
     return new THREE.MeshFaceMaterial( array );
 }
 
+var CUBIT_SIZE = 98;
+
 function createOneCubit(x, y, z, cubitIndex) {
 //    console.log("Creating cubit " + cubitIndex  + " " + x + "," + y + "," + z);
     var cubeMaterials = getMaterialArray(cubitIndex);
-    var cubeGeometry = new THREE.BoxGeometry(50, 50, 50);
+    var cubeGeometry = new THREE.BoxGeometry(CUBIT_SIZE, CUBIT_SIZE, CUBIT_SIZE);
     cube = new THREE.Mesh(cubeGeometry, cubeMaterials);
     cube.position = new THREE.Vector3(x, y, z);
     return cube;
@@ -359,7 +365,7 @@ function clampPi(x) {
 
 function roundMultiple(n, multiple) {
     if (! multiple) {
-        multiple = 100;
+        multiple = W;
     }
     var result = Math.round(n / multiple) * multiple;
     return result;
@@ -410,8 +416,7 @@ function animate() {
         }
 
         lastTime = new Date().getTime();
-        requestAnimationFrame(animate);
-    } else {
+    } else if (isRotating) {
         // Done rotating
         var currentFace = facesToRotate[0];
         var objects = getCubesForFace(currentFace);
@@ -448,6 +453,9 @@ function animate() {
             isRotating = false;
         }
     }
+
+    controls.update();
+    requestAnimationFrame(animate);
     renderer.render(scene, camera);
 }
 
@@ -542,6 +550,7 @@ console.log("Run all tests");
 
 function runCube() {
     addCubeToScene(scene);
+    requestAnimationFrame(animate);
 //    rotateCube(FRONT);
 //    rotateCube(FRONT);
 //    rotateCube(RIGHT);
@@ -591,7 +600,7 @@ function tmp() {
 
 function run() {
 
-    camera.position.x = 0;
+    camera.position.x = -400;
     camera.position.y = 400;
     camera.position.z = 500;
     camera.lookAt(new THREE.Vector3(0, 0, 0));
@@ -603,7 +612,7 @@ function run() {
     var axes2 = new THREE.AxisHelper( 1000);
     scene.add(axes2);
 
-    var controls = new THREE.OrbitControls(camera, renderer.domElement)
+    controls = new THREE.OrbitControls(camera, renderer.domElement)
 
 //    tmp();
     runCube();
