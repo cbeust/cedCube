@@ -8,8 +8,13 @@ var Y_AXIS_NEG = new THREE.Vector3(0, -1, 0);
 var Z_AXIS = new THREE.Vector3(0, 0, 1);
 var Z_AXIS_NEG = new THREE.Vector3(0, 0, -1);
 
-var allObjects = [];
+var WORLD = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26];
+
+var ALL_OBJECTS = [];
 var scene = new THREE.Scene();
+
+var colorString = "wwwwwwwwwbbbbbbbbbyyyyyyyyygggggggggooooooooorrrrrrrrr";
+//var colorString = "wwwwwwwwwbbbbbbbbbyyyyyyyyygggggggggwbygowrwwrrrrrrrrr";
 
 var FRONT = {
     name: "F",
@@ -84,7 +89,7 @@ var LEFT = {
     accept: function(x,y,z) {
         return x == -1;
     },
-    axis: X_AXIS_NEG,
+    axis: X_AXIS,
     cubits: [ 0, 3, 6, 9, 12, 15, 18, 21, 24 ],
     newOrder: [18, 1, 2, 9, 4, 5, 0, 7, 8,
         21, 10, 11, 12, 13, 14, 3, 16, 17,
@@ -96,7 +101,7 @@ var LEFT_PRIME = {
     accept: function(x,y,z) {
         return x == -1;
     },
-    axis: X_AXIS,
+    axis: X_AXIS_NEG,
     cubits: [ 0, 3, 6, 9, 12, 15, 18, 21, 24 ],
     newOrder: [6, 1, 2, 15, 4, 5, 24, 7, 8,
         3, 10, 11, 12, 13, 14, 21, 16, 17,
@@ -153,14 +158,13 @@ var DOWN_PRIME = {
 
 function clearScene() {
     var obj, i;
-    for ( i = allObjects.length - 1; i >= 0 ; i -- ) {
-        scene.remove(allObjects[i]);
+    for ( i = ALL_OBJECTS.length - 1; i >= 0 ; i -- ) {
+        scene.remove(ALL_OBJECTS[i]);
     }
-    allObjects = [];
+    ALL_OBJECTS = [];
     cubes = [];
 }
 
-var CUBITS = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26];
 //var CUBITS = [
 //    2, 11, 20, 3, 4, 5, 6, 7, 8,
 //    1, 10, 19, 12, 13, 14, 15, 16, 17,
@@ -173,14 +177,14 @@ function addCubeToScene(scene) {
     for (var z = 1; z >= -1; z--) {
         for (var y = 1; y >= -1; y--) {
             for (var x = -1; x <= 1; x++) {
-                var cube = createOneCubit(x * 100, y * 100, z * 100, CUBITS[cubitIndex++]);
+                var cube = createOneCubit(x * 100, y * 100, z * 100, WORLD[cubitIndex++]);
                 scene.add(cube);
-                allObjects.push(cube);
+                ALL_OBJECTS.push(cube);
             }
         }
     }
     renderer.render(scene, camera);
-    console.log("All objects: " + allObjects.length);
+    console.log("All objects: " + ALL_OBJECTS.length);
 }
 
 var rgbMap = {
@@ -192,8 +196,6 @@ var rgbMap = {
     'r': 0xff0000,
     '.': 0x888888
 }
-
-var colorString = "wwwwwwwwwbbbbbbbbbyyyyyyyyygggggggggooooooooorrrrrrrrr";
 
 var CUBIT_COLOR_INDICES = [
     {
@@ -303,7 +305,7 @@ var CUBIT_COLOR_INDICES = [
     {
         indices: [ -1, 17, 24, -1, -1, 51 ],
         expected: ".by..r"
-    },
+    }
 ]
 
 function getCubitColorsFromArray(indices) {
@@ -328,7 +330,7 @@ function getMaterialArray(cubitIndex) {
     var array = [];
     var ci = CUBIT_COLOR_INDICES[cubitIndex].indices;
     var cs = getCubitColorsFromArray(ci);
-    console.log("Color of cubit " + cubitIndex + " " + cs);
+//    console.log("Color of cubit " + cubitIndex + " " + cs);
     var rgbColors = stringToRgb(cs);
 
     // input order: z+,x+,z-,x-,y+,y-
@@ -368,12 +370,72 @@ function getCubesForFace(face) {
     var cubitIndices = face.cubits;
     for (var i = 0; i < cubitIndices.length; i++) {
         var ci = cubitIndices[i];
-        result.push(allObjects[ci]);
+        result.push(ALL_OBJECTS[ci]);
     }
     return result;
 }
 
-    function animate() {
+function sign(x){
+    if( +x === x ) { // check if a number was given
+        return (x === 0) ? x : (x > 0) ? 1 : -1;
+    }
+    return NaN;
+}
+
+function clampPi(x) {
+    var DELTA = 0.3;
+    var result = x;
+    var s = sign(x);
+    var ax = Math.abs(x);
+    if (ax < DELTA) {
+        result = 0;
+    } else if (Math.abs(ax - PI_2) < DELTA) {
+        result = s * PI_2;
+    } else if (Math.abs(ax - 3 * PI_2 / 2) < DELTA) {
+        result = s * 3 * PI_2 / 2;
+    } else if (Math.abs(ax - Math.PI * 2) < DELTA) {
+        result = Math.PI * 2;
+    }
+    return result;
+}
+
+function roundMultiple(n, multiple) {
+    if (! multiple) {
+        multiple = 100;
+    }
+    var result = Math.round(n / multiple) * multiple;
+    return result;
+}
+
+function clamp100(x) {
+    var DELTA = 5;
+    var ax = Math.abs(100 - x % 100);
+    var result;
+    if (ax < DELTA) {
+        var tmp = x > 0 ? x + DELTA : x - DELTA;
+        result = tmp - (tmp % 100);
+    } else {
+        result = x;
+    }
+    return result;
+}
+
+function testRoundMultiple() {
+    assertEquals(roundMultiple(99), 100);
+    assertEquals(roundMultiple(-97.98013305664062), 100);
+    assertEquals(roundMultiple(-97), 100);
+    assertEquals(roundMultiple(94), 94);
+    assertEquals(roundMultiple(95), 100);
+    assertEquals(roundMultiple(96), 100);
+    assertEquals(roundMultiple(97), 100);
+    assertEquals(roundMultiple(100), 100);
+    assertEquals(roundMultiple(101), 100);
+    assertEquals(roundMultiple(-99), -100);
+    assertEquals(roundMultiple(-100), -100);
+    assertEquals(roundMultiple(-101), -100);
+}
+
+function animate() {
     if (rotateTarget > 0) {
         // Still rotating
         var currentFace = facesToRotate[0];
@@ -397,6 +459,14 @@ function getCubesForFace(face) {
         var objects = getCubesForFace(currentFace);
         for (var i = 0; i < objects.length; i++) {
             var r = objects[i].rotation;
+            r.x = clampPi(r.x);
+            r.y = clampPi(r.y);
+            r.z = clampPi(r.z);
+            var p = objects[i].position;
+            p.x = roundMultiple(p.x);
+            p.y = roundMultiple(p.y);
+            p.z = roundMultiple(p.z);
+            console.log("Coords after applyMatrix: " + p.x + "," + p.y + "," + p.z);
             console.log("Rotation: " + r.x + "," + r.y + "," + r.z);
         }
 
@@ -404,10 +474,13 @@ function getCubesForFace(face) {
         if (currentFace.newOrder.length != 27) {
             alert("Wrong newOrder");
         }
+        var debug = "";
         for (var i = 0; i < currentFace.newOrder.length; i++) {
-            newObjects[i] = allObjects[currentFace.newOrder[i]];
+            debug += currentFace.newOrder[i] + " ";
+            newObjects[i] = ALL_OBJECTS[currentFace.newOrder[i]];
         }
-        allObjects = newObjects;
+        console.log("New order: " + debug);
+        ALL_OBJECTS = newObjects;
 
         facesToRotate.shift();
         lastTime = 0;
@@ -470,7 +543,37 @@ function testCubitColors() {
     console.log(CUBIT_COLOR_INDICES.length + " tests done");
 }
 
+function assertEquals(actual, expected, message) {
+    if (isNaN(actual) || Math.abs(actual - expected) > 0.1) {
+        alert("Assertion failed: expected " + expected + " but got " + actual);
+    }
+}
+
+function testclampPi() {
+    assertEquals(clampPi(6.4), 6.4);
+    assertEquals(clampPi(6.29), Math.PI * 2);
+    assertEquals(clampPi(6.28), Math.PI * 2);
+    assertEquals(clampPi(6.27), Math.PI * 2);
+    assertEquals(clampPi(4.8), 4.8);
+    assertEquals(clampPi(4.72), Math.PI * 3 / 2);
+    assertEquals(clampPi(4.71), Math.PI * 3 / 2);
+    assertEquals(clampPi(4.70), Math.PI * 3 / 2);
+    assertEquals(clampPi(3.15), Math.PI);
+    assertEquals(clampPi(3.14), Math.PI);
+    assertEquals(clampPi(3.13), Math.PI);
+    assertEquals(clampPi(1.58), 1.58);
+    assertEquals(clampPi(1.57), PI_2);
+    assertEquals(clampPi(1.56), PI_2);
+    assertEquals(clampPi(0.01), 0);
+    assertEquals(clampPi(0.1), 0.1);
+}
+
+// @Tests
+
 //testCubitColors();
+//testclampPi();
+//testRoundMultiple();
+console.log("Run all tests");
 
 function runCube() {
 
@@ -489,7 +592,7 @@ function runCube() {
 //    rotateCube(RIGHT_PRIME);
 }
 
-function test() {
+function tmp() {
     var material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
 //    {
 //        var pivot1 = new THREE.Object3D();
@@ -505,44 +608,6 @@ function test() {
     cube.position.x = 50;
     scene.add(cube);
     renderer.render(scene, camera);
-
-    var rotWorldMatrix;
-// Rotate an object around an arbitrary axis in world space
-    function rotateAroundWorldAxis(object, axis, radians) {
-        rotWorldMatrix = new THREE.Matrix4();
-        rotWorldMatrix.makeRotationAxis(axis.normalize(), radians);
-
-        // old code for Three.JS pre r54:
-        //  rotWorldMatrix.multiply(object.matrix);
-        // new code for Three.JS r55+:
-        rotWorldMatrix.multiply(object.matrix);                // pre-multiply
-
-        object.matrix = rotWorldMatrix;
-
-        // old code for Three.js pre r49:
-        // object.rotation.getRotationFromMatrix(object.matrix, object.scale);
-        // old code for Three.js pre r59:
-        // object.rotation.setEulerFromRotationMatrix(object.matrix);
-        // code for r59+:
-        object.rotation.setFromRotationMatrix(object.matrix);
-    }
-
-    // Rotate an object around an arbitrary axis in object space
-    var rotObjectMatrix;
-    function rotateAroundObjectAxis(object, axis, radians) {
-        rotObjectMatrix = new THREE.Matrix4();
-        rotObjectMatrix.makeRotationAxis(axis.normalize(), radians);
-
-        // old code for Three.JS pre r54:
-        // object.matrix.multiplySelf(rotObjectMatrix);      // post-multiply
-        // new code for Three.JS r55+:
-        object.matrix.multiply(rotObjectMatrix);
-
-        // old code for Three.js pre r49:
-        // object.rotation.getRotationFromMatrix(object.matrix, object.scale);
-        // new code for Three.js r50+:
-        object.rotation.setEulerFromRotationMatrix(object.matrix);
-    }
 
     count = 0;
 
@@ -565,8 +630,8 @@ function test() {
 
 function run() {
 
-    camera.position.x = 50;
-    camera.position.y = 50;
+    camera.position.x = 0;
+    camera.position.y = 400;
     camera.position.z = 500;
     camera.lookAt(new THREE.Vector3(0, 0, 0));
     renderer.setSize(window.innerWidth, window.innerHeight);
@@ -579,7 +644,7 @@ function run() {
 
     var controls = new THREE.OrbitControls(camera, renderer.domElement)
 
-//    test();
+//    tmp();
     runCube();
 
     renderer.render(scene, camera);
