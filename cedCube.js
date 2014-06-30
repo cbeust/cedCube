@@ -106,18 +106,18 @@ var DOWN = {
     name: "D",
     axis: Y_AXIS_NEG,
     cubits: [ 6, 7, 8, 15, 16, 17, 24, 25, 26 ],
-    newOrder: [0, 1, 2, 3, 4, 5, 24, 15, 6,
-        9, 10, 11, 12, 13, 14, 25, 16, 7,
-        18, 19, 20, 21, 22, 23, 26, 17, 8 ]
+    newOrder: [ 0, 1, 2, 3, 4, 5, 8, 17, 26,
+        9, 10, 11, 12, 13, 14, 7, 16, 25,
+        18, 19, 20, 21, 22, 23, 6, 15, 24 ]
 };
 
 var DOWN_PRIME = {
     name: "D'",
     axis: Y_AXIS,
     cubits: [ 6, 7, 8, 15, 16, 17, 24, 25, 26 ],
-    newOrder: [ 0, 1, 2, 3, 4, 5, 8, 17, 26,
-        9, 10, 11, 12, 13, 14, 7, 16, 25,
-        18, 19, 20, 21, 22, 23, 6, 15, 24 ]
+    newOrder: [0, 1, 2, 3, 4, 5, 24, 15, 6,
+        9, 10, 11, 12, 13, 14, 25, 16, 7,
+        18, 19, 20, 21, 22, 23, 26, 17, 8 ]
 };
 
 function clearScene() {
@@ -128,12 +128,6 @@ function clearScene() {
     ALL_OBJECTS = [];
     cubes = [];
 }
-
-//var CUBITS = [
-//    2, 11, 20, 3, 4, 5, 6, 7, 8,
-//    1, 10, 19, 12, 13, 14, 15, 16, 17,
-//    0, 9, 18, 21, 22, 23, 24, 25, 26
-//];
 
 function addCubeToScene(scene) {
     clearScene();
@@ -450,15 +444,22 @@ function animate() {
         lastTime = 0;
         if (facesToRotate.length > 0) {
             rotateTarget = PI_2;
+        } else {
+            isRotating = false;
         }
     }
     renderer.render(scene, camera);
 }
 
+var isRotating = false;
+
 function rotateCube(face) {
     console.log("Rotating " + face.name);
     facesToRotate.push(face);
-    rotateTarget = PI_2;
+    if (! isRotating) {
+        rotateTarget = PI_2;
+    }
+    isRotating = true;
 //    addCubeToScene(scene);
     animate();
 }
@@ -540,20 +541,16 @@ function testclampPi() {
 console.log("Run all tests");
 
 function runCube() {
-
     addCubeToScene(scene);
 //    rotateCube(FRONT);
-//    rotateCube(UP);
-//    rotateCube(RIGHT);
-//    rotateCube(FRONT_PRIME);
-//    rotateCube(UP_PRIME);
-//    rotateCube(RIGHT_PRIME);
 //    rotateCube(FRONT);
-//    rotateCube(UP);
 //    rotateCube(RIGHT);
-//    rotateCube(FRONT_PRIME);
-//    rotateCube(UP_PRIME);
-//    rotateCube(RIGHT_PRIME);
+//    rotateCube(FRONT);
+//    rotateCube(LEFT);
+//    rotateCube(DOWN);
+//    rotateCube(UP);
+//    rotateCube(FRONT);
+//    rotateCube(FRONT);
 }
 
 function tmp() {
