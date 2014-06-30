@@ -8,6 +8,10 @@ body {
 }
 
 div#interface {
-    position:absolute;
-    width: 100%;
+    position: absolute;
+    width: 50%;
+    margin: 0 auto;
+    background-color: #ff0000;
+    bottom: 0;
+    left: 25%;
 }

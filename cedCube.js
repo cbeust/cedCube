@@ -1,3 +1,8 @@
+var WIDTH = 600;
+var HEIGHT = 600;
+var W = 200;
+var CUBIT_SIZE = W - 4;
+
 var PI_2 = Math.PI / 2;
 var ANIMATE_INCREMENT = 0.01;
 
@@ -8,13 +13,24 @@ var Y_AXIS_NEG = new THREE.Vector3(0, -1, 0);
 var Z_AXIS = new THREE.Vector3(0, 0, 1);
 var Z_AXIS_NEG = new THREE.Vector3(0, 0, -1);
 
+var rgbMap = {
+    'w': 0xffffff,
+    'b': 0x0000ff,
+    'y': 0xffff00,
+    'g': 0x00ff00,
+    'o': 0xff8c00,
+    'r': 0xff0000,
+    '.': 0x666666
+}
+
 var WORLD = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26];
 
 var ALL_OBJECTS = [];
 var scene = new THREE.Scene();
 
-var colorString = "wwwwwwwwwbbbbbbbbbyyyyyyyyygggggggggooooooooorrrrrrrrr";
-//var colorString = "wwwwwwwwwbbbbbbbbbyyyyyyyyygggggggggwbygowrwwrrrrrrrrr";
+var colorString =
+    "wwwwwwwwwbbbbbbbbbyyyyyyyyygggggggggooooooooorrrrrrrrr";
+//    "rrr......bb.bb.";
 
 var controls;
 
@@ -131,8 +147,6 @@ function clearScene() {
     cubes = [];
 }
 
-var W = 100;
-
 function addCubeToScene(scene) {
     clearScene();
     var cubitIndex = 0;
@@ -147,16 +161,6 @@ function addCubeToScene(scene) {
     }
     renderer.render(scene, camera);
     console.log("All objects: " + ALL_OBJECTS.length);
-}
-
-var rgbMap = {
-    'w': 0xffffff,
-    'b': 0x0000ff,
-    'y': 0xffff00,
-    'g': 0x00ff00,
-    'o': 0xff8c00,
-    'r': 0xff0000,
-    '.': 0x444444
 }
 
 var CUBIT_COLOR_INDICES = [
@@ -274,7 +278,7 @@ function getCubitColorsFromArray(indices) {
     var colors = "";
     for (var i = 0; i < indices.length; i++) {
         var ind = indices[i];
-        colors += ind != -1 ? colorString[ind] : ".";
+        colors += ind != -1 && ind < colorString.length ? colorString[ind] : ".";
     }
     return colors;
 //    console.log("Cubit colors: " + colors + " expected: " + expected);
@@ -307,8 +311,6 @@ function getMaterialArray(cubitIndex) {
     return new THREE.MeshFaceMaterial( array );
 }
 
-var CUBIT_SIZE = 98;
-
 function createOneCubit(x, y, z, cubitIndex) {
 //    console.log("Creating cubit " + cubitIndex  + " " + x + "," + y + "," + z);
     var cubeMaterials = getMaterialArray(cubitIndex);
@@ -320,9 +322,6 @@ function createOneCubit(x, y, z, cubitIndex) {
 
 var facesToRotate = [];
 var rotateTarget = 0;
-
-var camera = new THREE.PerspectiveCamera( 75, window.innerWidth / window.innerHeight, 1, 10000 );
-var renderer = new THREE.CanvasRenderer();
 
 var lastTime = 0;
 
@@ -611,19 +610,21 @@ function inspectWorld() {
     }
 }
 
+var camera = new THREE.PerspectiveCamera(40, WIDTH / HEIGHT, 1, 10000);
+var renderer = new THREE.CanvasRenderer();
+
 function run() {
 
-    camera.position.x = -400;
-    camera.position.y = 400;
-    camera.position.z = 500;
-    camera.lookAt(new THREE.Vector3(0, 0, 0));
-    renderer.setSize(window.innerWidth, window.innerHeight);
-    renderer.setClearColorHex(0x888888, 1);
+    camera.position.set(1000, 600, 1000);
+    camera.up
+//    camera.lookAt(new THREE.Vector3(0, -200, 0));
+    renderer.setSize(WIDTH, HEIGHT);
+    renderer.setClearColor(0x888888, 1);
 
     document.body.appendChild( renderer.domElement );
 
-    var axes2 = new THREE.AxisHelper( 1000);
-    scene.add(axes2);
+//    var axes2 = new THREE.AxisHelper( 1000);
+//    scene.add(axes2);
 
     controls = new THREE.OrbitControls(camera, renderer.domElement)
 
