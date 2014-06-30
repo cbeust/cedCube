@@ -156,7 +156,7 @@ var rgbMap = {
     'g': 0x00ff00,
     'o': 0xff8c00,
     'r': 0xff0000,
-    '.': 0x888888
+    '.': 0x444444
 }
 
 var CUBIT_COLOR_INDICES = [
@@ -355,6 +355,8 @@ function clampPi(x) {
         result = 0;
     } else if (Math.abs(ax - PI_2) < DELTA) {
         result = s * PI_2;
+    } else if (Math.abs(ax - Math.PI) < DELTA) {
+        result = s * Math.PI;
     } else if (Math.abs(ax - 3 * PI_2 / 2) < DELTA) {
         result = s * 3 * PI_2 / 2;
     } else if (Math.abs(ax - Math.PI * 2) < DELTA) {
@@ -404,7 +406,7 @@ function animate() {
         // Still rotating
         var currentFace = facesToRotate[0];
         var delta = new Date().getTime() - lastTime;
-        var increment = lastTime == 0 ? 0.02 : delta / 300;
+        var increment = lastTime == 0 ? 0.04 : delta / 200;
         rotateTarget -= increment;
 
 //        faceGroup.rotateOnAxis(currentFace.axis, increment * currentFace.sign);
@@ -598,6 +600,17 @@ function tmp() {
 
 }
 
+function inspectWorld() {
+    for (var i = 0; i < ALL_OBJECTS.length; i++) {
+        var p = ALL_OBJECTS[i].position;
+        var r = ALL_OBJECTS[i].rotation;
+        console.log("#" + i + " position: "
+            + p.x + "," + p.y + "," + p.z
+            + " rotation: "
+            + r.x + "," + r.y + "," + r.z);
+    }
+}
+
 function run() {
 
     camera.position.x = -400;
@@ -605,7 +618,7 @@ function run() {
     camera.position.z = 500;
     camera.lookAt(new THREE.Vector3(0, 0, 0));
     renderer.setSize(window.innerWidth, window.innerHeight);
-//    renderer.setClearColorHex(0x333F47, 1);
+    renderer.setClearColorHex(0x888888, 1);
 
     document.body.appendChild( renderer.domElement );
 

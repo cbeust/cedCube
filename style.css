@@ -1,0 +1,13 @@
+body {
+    background-color: #ffffff;
+    margin: 0px;
+}
+
+.container {
+    background-color: #ffffff;
+}
+
+div#interface {
+    position:absolute;
+    width: 100%;
+}
