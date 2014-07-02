@@ -15,9 +15,9 @@ var Z_AXIS_NEG = new THREE.Vector3(0, 0, -1);
 
 var rgbMap = {
     'w': 0xffffff,
-    'b': 0x0000ff,
-    'y': 0xffff00,
-    'g': 0x00ff00,
+    'b': 0x0000cc,
+    'y': 0xeeee00,
+    'g': 0x00aa00,
     'o': 0xff8c00,
     'r': 0xff0000,
     '.': 0x666666
@@ -29,7 +29,7 @@ var ALL_OBJECTS = [];
 var scene = new THREE.Scene();
 
 var colorString =
-    "wwwwwwwwwbbbbbbbbbyyyyyyyyygggggggggooooooooorrrrrrrrr";
+    "gggggggggrrrrrrrrrbbbbbbbbbooooooooowwwwwwwwwyyyyyyyyy";
 //    "rrr......bb.bb.";
 
 var controls;
@@ -137,6 +137,21 @@ var DOWN_PRIME = {
         9, 10, 11, 12, 13, 14, 25, 16, 7,
         18, 19, 20, 21, 22, 23, 26, 17, 8 ]
 };
+
+var FACES = [
+    FRONT, FRONT_PRIME,
+    RIGHT, RIGHT_PRIME,
+    BACK, BACK_PRIME,
+    LEFT, LEFT_PRIME,
+    UP, UP_PRIME,
+    DOWN, DOWN_PRIME
+];
+
+var FACE_MAP = {};
+
+for (var i = 0; i < FACES.length; i++) {
+    FACE_MAP[FACES[i].name] = FACES[i];
+}
 
 function clearScene() {
     var obj, i;
@@ -321,8 +336,7 @@ function createOneCubit(x, y, z, cubitIndex) {
 }
 
 var facesToRotate = [];
-var rotateTarget = 0;
-
+var rotateCount = 0;
 var lastTime = 0;
 
 /**
@@ -346,7 +360,7 @@ function sign(x){
 }
 
 function clampPi(x) {
-    var DELTA = 0.3;
+    var DELTA = 0.75;
     var result = x;
     var s = sign(x);
     var ax = Math.abs(x);
@@ -360,6 +374,8 @@ function clampPi(x) {
         result = s * 3 * PI_2 / 2;
     } else if (Math.abs(ax - Math.PI * 2) < DELTA) {
         result = Math.PI * 2;
+    } else {
+        alert("Couldn't clamp " + x);
     }
     return result;
 }
@@ -401,20 +417,26 @@ function testRoundMultiple() {
 }
 
 function animate() {
-    if (rotateTarget > 0) {
+    if (rotateCount > 0) {
         // Still rotating
         var currentFace = facesToRotate[0];
         var delta = new Date().getTime() - lastTime;
         var increment = lastTime == 0 ? 0.04 : delta / 200;
-        rotateTarget -= increment;
+        if (rotateCount - increment < 0) {
+            increment = rotateCount;
+        }
+        console.log("Increment: " + increment);
+        rotateCount -= increment;
 
 //        faceGroup.rotateOnAxis(currentFace.axis, increment * currentFace.sign);
         var objects = getCubesForFace(currentFace);
         var matrix = new THREE.Matrix4().makeRotationAxis(currentFace.axis, increment);
+        console.log("Rotation before applyMatrix: " + objects[0].rotation.z)
         for (var i = 0; i < objects.length; i++) {
             objects[i].applyMatrix(matrix);
 //            renderer.render(scene, camera);
         }
+        console.log("Rotation after applyMatrix: " + objects[0].rotation.z)
 
         lastTime = new Date().getTime();
     } else if (isRotating) {
@@ -423,17 +445,15 @@ function animate() {
         var objects = getCubesForFace(currentFace);
         for (var i = 0; i < objects.length; i++) {
             var r = objects[i].rotation;
-            r.x = clampPi(r.x);
-            r.y = clampPi(r.y);
-            r.z = clampPi(r.z);
             var p = objects[i].position;
             p.x = roundMultiple(p.x);
             p.y = roundMultiple(p.y);
             p.z = roundMultiple(p.z);
-            console.log("Coords after applyMatrix: " + p.x + "," + p.y + "," + p.z);
-            console.log("Rotation: " + r.x + "," + r.y + "," + r.z);
+            console.log("#" + i + " coords after applyMatrix: " + p.x + "," + p.y + "," + p.z);
+            console.log("#" + i + " rotation: " + r.x + "," + r.y + "," + r.z);
         }
 
+        renderer.render(scene, camera);
         var newObjects = [];
         if (currentFace.newOrder.length != 27) {
             alert("Wrong newOrder");
@@ -449,7 +469,7 @@ function animate() {
         facesToRotate.shift();
         lastTime = 0;
         if (facesToRotate.length > 0) {
-            rotateTarget = PI_2;
+            resetRotateCount();
         } else {
             isRotating = false;
         }
@@ -462,15 +482,48 @@ function animate() {
 
 var isRotating = false;
 
-function rotateCube(face) {
-    console.log("Rotating " + face.name);
-    facesToRotate.push(face);
+/**
+ * Turns a text formula (furFUR) into a list of faces.
+ */
+function formulaToFaces(formula) {
+    var result = [];
+    for (var i = 0; i < formula.length; i++) {
+        var c = formula.charAt(i);
+        var face;
+        if (c == c.toLowerCase()) {
+            face = FACE_MAP[c.toUpperCase()];
+        } else if (c == c.toUpperCase()) {
+            face = FACE_MAP[c.toUpperCase() + "'"];
+        } else {
+            alert("Unknown face: " + c);
+        }
+        result.push(face);
+    }
+    return result;
+}
+
+function playFormula(formula) {
+    console.log("Playing " + formula);
+    rotateFaces(formulaToFaces(formula));
+}
+
+function resetRotateCount() {
+    rotateCount = PI_2;
+    var axis = facesToRotate[0].axis;
+}
+
+function rotateFaces(faces) {
+    for (var i = 0; i < faces.length; i++) {
+        facesToRotate.push(faces[i]);
+    }
     if (! isRotating) {
-        rotateTarget = PI_2;
+        resetRotateCount();
     }
     isRotating = true;
-//    addCubeToScene(scene);
-    animate();
+}
+
+function rotateFace(face) {
+    rotateFaces([ face ]);
 }
 
 document.onkeydown = function() {
@@ -478,22 +531,22 @@ document.onkeydown = function() {
     var c = window.event.keyCode;
     switch (c) {
         case 66: // b
-            rotateCube(shift ? BACK_PRIME : BACK);
+            rotateFace(shift ? BACK_PRIME : BACK);
             break;
         case 68: // b
-            rotateCube(shift ? DOWN_PRIME : DOWN);
+            rotateFace(shift ? DOWN_PRIME : DOWN);
             break;
         case 70: // f
-            rotateCube(shift ? FRONT_PRIME : FRONT);
+            rotateFace(shift ? FRONT_PRIME : FRONT);
             break;
         case 76: /// l
-            rotateCube(shift ? LEFT_PRIME : LEFT);
+            rotateFace(shift ? LEFT_PRIME : LEFT);
             break;
         case 82: // r
-            rotateCube(shift ? RIGHT_PRIME : RIGHT);
+            rotateFace(shift ? RIGHT_PRIME : RIGHT);
             break;
         case 85: // u
-            rotateCube(shift ? UP_PRIME : UP);
+            rotateFace(shift ? UP_PRIME : UP);
             break;
         default:
             console.log("Key: " + c);
@@ -552,15 +605,15 @@ console.log("Run all tests");
 function runCube() {
     addCubeToScene(scene);
     requestAnimationFrame(animate);
-//    rotateCube(FRONT);
-//    rotateCube(FRONT);
-//    rotateCube(RIGHT);
-//    rotateCube(FRONT);
-//    rotateCube(LEFT);
-//    rotateCube(DOWN);
-//    rotateCube(UP);
-//    rotateCube(FRONT);
-//    rotateCube(FRONT);
+//    rotateFace(FRONT);
+//    rotateFace(FRONT);
+//    rotateFace(RIGHT);
+//    rotateFace(FRONT);
+//    rotateFace(LEFT);
+//    rotateFace(DOWN);
+//    rotateFace(UP);
+//    rotateFace(FRONT);
+//    rotateFace(FRONT);
 }
 
 function tmp() {
