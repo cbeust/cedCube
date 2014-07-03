@@ -1,5 +1,5 @@
-var WIDTH = 600;
-var HEIGHT = 600;
+var WIDTH = 300;
+var HEIGHT = 300;
 var W = 200;
 var CUBIT_SIZE = W - 4;
 
@@ -425,18 +425,18 @@ function animate() {
         if (rotateCount - increment < 0) {
             increment = rotateCount;
         }
-        console.log("Increment: " + increment);
+//        console.log("Increment: " + increment);
         rotateCount -= increment;
 
 //        faceGroup.rotateOnAxis(currentFace.axis, increment * currentFace.sign);
         var objects = getCubesForFace(currentFace);
         var matrix = new THREE.Matrix4().makeRotationAxis(currentFace.axis, increment);
-        console.log("Rotation before applyMatrix: " + objects[0].rotation.z)
+//        console.log("Rotation before applyMatrix: " + objects[0].rotation.z)
         for (var i = 0; i < objects.length; i++) {
             objects[i].applyMatrix(matrix);
 //            renderer.render(scene, camera);
         }
-        console.log("Rotation after applyMatrix: " + objects[0].rotation.z)
+//        console.log("Rotation after applyMatrix: " + objects[0].rotation.z)
 
         lastTime = new Date().getTime();
     } else if (isRotating) {
@@ -449,8 +449,8 @@ function animate() {
             p.x = roundMultiple(p.x);
             p.y = roundMultiple(p.y);
             p.z = roundMultiple(p.z);
-            console.log("#" + i + " coords after applyMatrix: " + p.x + "," + p.y + "," + p.z);
-            console.log("#" + i + " rotation: " + r.x + "," + r.y + "," + r.z);
+//            console.log("#" + i + " coords after applyMatrix: " + p.x + "," + p.y + "," + p.z);
+//            console.log("#" + i + " rotation: " + r.x + "," + r.y + "," + r.z);
         }
 
         renderer.render(scene, camera);
@@ -463,7 +463,7 @@ function animate() {
             debug += currentFace.newOrder[i] + " ";
             newObjects[i] = ALL_OBJECTS[currentFace.newOrder[i]];
         }
-        console.log("New order: " + debug);
+//        console.log("New order: " + debug);
         ALL_OBJECTS = newObjects;
 
         facesToRotate.shift();
@@ -666,10 +666,45 @@ function inspectWorld() {
 var camera = new THREE.PerspectiveCamera(40, WIDTH / HEIGHT, 1, 10000);
 var renderer = new THREE.CanvasRenderer();
 
+function modifyDom() {
+    var nodes = document.getElementsByClassName('CedCube');
+    for (var i = 0; i < nodes.length; i++) {
+        var node = nodes[i];
+        console.log("element: " + node);
+        var formula = node.attributes['formula'].textContent;
+        WIDTH = parseInt(node.attributes['width'].textContent);
+        HEIGHT = parseInt(node.attributes['height'].textContent)
+        if (formula) {
+            var div = document.createElement("div");
+            div.setAttribute("class", "CedCubeInterface");
+            div.setAttribute("style", "width:" + (WIDTH - 2));
+            node.appendChild(div);
+
+            {
+                // Formula text
+                var textDiv = document.createElement("div");
+                textDiv.setAttribute("class", "formulaText");
+                textDiv.appendChild(document.createTextNode(formula));
+                div.appendChild(textDiv);
+            }
+
+            {
+                // Play
+                var a = document.createElement("a");
+                a.setAttribute("href", "#");
+                a.setAttribute("onclick", "playFormula('" + formula + "')");
+                a.appendChild(document.createTextNode("Play"));
+                div.appendChild(a);
+            }
+        }
+    }
+}
+
 function run() {
+    modifyDom();
 
     camera.position.set(1000, 600, 1000);
-    camera.up
+//    camera.up
 //    camera.lookAt(new THREE.Vector3(0, -200, 0));
     renderer.setSize(WIDTH, HEIGHT);
     renderer.setClearColor(0x888888, 1);
