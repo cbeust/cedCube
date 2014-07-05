@@ -169,7 +169,8 @@ Cube = function(width, height, formula, startString, nodeId) {
         'g': 0x00aa00,
         'o': 0xff8c00,
         'r': 0xff0000,
-        '.': 0x666666
+        '.': 0x666666,
+        'X': 0x000000
     }
 
     var WORLD = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26];
@@ -204,111 +205,111 @@ Cube = function(width, height, formula, startString, nodeId) {
     
     var CUBIT_COLOR_INDICES = [
         {
-            indices: [ 0, -1, -1, 29, 42, -1 ],
+            indices: [ 0, -2, -2, 29, 42, -2 ],
             expected: "w..go."
         },
         {
-            indices: [ 1, -1, -1, -1, 43, -1 ],
+            indices: [ 1, -2, -2, -2, 43, -2 ],
             expected: "w...o."
         },
         {
-            indices: [ 2, 9, -1, -1, 44, -1 ],
+            indices: [ 2, 9, -2, -2, 44, -2 ],
             expected: "wb..o."
         },
         {
-            indices: [ 3, -1, -1, 32, -1, -1 ],
+            indices: [ 3, -2, -2, 32, -2, -2 ],
             expected: "w..g.."
         },
         {
-            indices: [ 4, -1, -1, -1, -1, -1 ], // middle of front
+            indices: [ 4, -2, -2, -2, -2, -2 ], // middle of front
             expected: "w....."
         },
         {
-            indices: [ 5, 12, -1, -1, -1, -1 ],
+            indices: [ 5, 12, -2, -2, -2, -2 ],
             expected: "wb...."
         },
         {
-            indices: [ 6, -1, -1, 35, -1, 45 ],
+            indices: [ 6, -2, -2, 35, -2, 45 ],
             expected: "w..g.r"
         },
         {
-            indices: [ 7, -1, -1, -1, -1, 46 ],
+            indices: [ 7, -2, -2, -2, -2, 46 ],
             expected: "w....r"
         },
         {
-            indices: [ 8, 15, -1, -1, -1, 47 ],
+            indices: [ 8, 15, -2, -2, -2, 47 ],
             expected: "wb...r"
         },
         {
-            indices: [ -1, -1, -1, 28, 39, -1 ],
+            indices: [ -2, -2, -2, 28, 39, -2 ],
             expected: "...go."
         },
         {
-            indices: [ -1, -1, -1, -1, 40, -1 ], // middle
+            indices: [ -2, -2, -2, -2, 40, -2 ], // middle
             expected: "....o."
         },
         {
-            indices: [ -1, 10, -1, -1, 41, -1 ],
+            indices: [ -2, 10, -2, -2, 41, -2 ],
             expected: ".b..o."
         },
         {
-            indices: [ -1, -1, -1, 31, -1, -1 ],
+            indices: [ -2, -2, -2, 31, -2, -2 ],
             expected: "...g.."
         },
         {
-            indices: [ -1, -1, -1, -1, -1, -1 ], // center cube
+            indices: [ -2, -2, -2, -2, -2, -2 ], // center cube
             expected: "......"
         },
         {
-            indices: [ -1, 13, -1, -1, -1, -1 ], // middle of right
+            indices: [ -2, 13, -2, -2, -2, -2 ], // middle of right
             expected: ".b...."
         },
         {
-            indices: [ -1, -1, -1, 34, -1, 48 ],
+            indices: [ -2, -2, -2, 34, -2, 48 ],
             expected: "...g.r"
         },
         {
-            indices: [ -1, -1, -1, -1, -1, 49 ], // middle of down
+            indices: [ -2, -2, -2, -2, -2, 49 ], // middle of down
             expected: ".....r"
         },
         {
-            indices: [ -1, 16, -1, -1, -1, 50 ],
+            indices: [ -2, 16, -2, -2, -2, 50 ],
             expected: ".b...r"
         },
         {
-            indices: [ -1, -1, 20, 27, 36, -1 ],
+            indices: [ -2, -2, 20, 27, 36, -2 ],
             expected: "..ygo."
         },
         {
-            indices: [ -1, -1, 19, -1, 37, -1 ],
+            indices: [ -2, -2, 19, -2, 37, -2 ],
             expected: "..y.o."
         },
         {
-            indices: [ -1, 11, 18, -1, 38, -1 ],
+            indices: [ -2, 11, 18, -2, 38, -2 ],
             expected: ".by.o."
         },
         {
-            indices: [ -1, -1, 23, 30, -1, -1],
+            indices: [ -2, -2, 23, 30, -2, -2],
             expected: "..yg.."
         },
         {
-            indices: [ -1, -1, 22, -1, -1, -1 ], // middle of back
+            indices: [ -2, -2, 22, -2, -2, -2 ], // middle of back
             expected: "..y..."
         },
         {
-            indices: [ -1, 14, 21, -1, -1, -1 ],
+            indices: [ -2, 14, 21, -2, -2, -2 ],
             expected: ".by..."
         },
         {
-            indices: [ -1, -1, 26, 33, -1, 53 ],
+            indices: [ -2, -2, 26, 33, -2, 53 ],
             expected: "..yg.r"
         },
         {
-            indices: [ -1, -1, 25, -1, -1, 52 ],
+            indices: [ -2, -2, 25, -2, -2, 52 ],
             expected: "..y..r"
         },
         {
-            indices: [ -1, 17, 24, -1, -1, 51 ],
+            indices: [ -2, 17, 24, -2, -2, 51 ],
             expected: ".by..r"
         }
     ]
@@ -317,7 +318,15 @@ Cube = function(width, height, formula, startString, nodeId) {
         var colors = "";
         for (var i = 0; i < indices.length; i++) {
             var ind = indices[i];
-            colors += ind != -1 && ind < this.startString.length ? this.startString[ind] : ".";
+            var c;
+            if (ind >= 0 && ind < this.startString.length) {
+                c = this.startString[ind];
+            } else if (ind == -2) {
+                c = "X";
+            } else {
+                c = ".";
+            }
+            colors += c;
         }
         return colors;
     //    console.log("Cubit colors: " + colors + " expected: " + expected);
@@ -652,6 +661,10 @@ cubeMap = {};
 
 function playFormula(nodeId) {
     cubeMap[nodeId].playCubeFormula();
+    if (window.event) {
+        window.event.returnValue = false;
+    }
+    return false;
 }
 
 function animate() {
@@ -688,8 +701,8 @@ function modifyDom() {
         console.log("element: " + node);
         var paramMap = parseParams(node.attributes['cc-params'].textContent);
         var f = getParam(paramMap, 'formula', null);
-        var width = parseInt(getParam(paramMap, 'width', '300'));
-        var height = parseInt(getParam(paramMap, 'height', '300'));
+        var width = parseInt(getParam(paramMap, 'width', '200'));
+        var height = parseInt(getParam(paramMap, 'height', '200'));
         var startString = getParam(paramMap, "startString", defaultStartString);
         startString = startString.replace(new RegExp(" ", 'g'), "");
         var id = node.attributes.id.textContent;
@@ -724,7 +737,7 @@ function modifyDom() {
             {
                 // Play
                 var a = document.createElement("a");
-                a.setAttribute("href", "#");
+                a.setAttribute("href", "");
                 a.setAttribute("onclick", "playFormula('" + id + "')");
                 a.appendChild(document.createTextNode("Play"));
                 div.appendChild(a);
