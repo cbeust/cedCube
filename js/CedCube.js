@@ -1,3 +1,127 @@
+Axes = {
+    X: new THREE.Vector3(1, 0, 0),
+    X_NEG: new THREE.Vector3(-1, 0, 0),
+    Y:  new THREE.Vector3(0, 1, 0),
+    Y_NEG: new THREE.Vector3(0, -1, 0),
+    Z: new THREE.Vector3(0, 0, 1),
+    Z_NEG: new THREE.Vector3(0, 0, -1)
+};
+
+Faces = {
+    FRONT: {
+        name: "F",
+        axis: Axes.Z_NEG,
+        cubits: [ 0, 1, 2, 3, 4, 5, 6, 7, 8],
+        newOrder: [6, 3, 0, 7, 4, 1, 8, 5, 2,
+           9, 10, 11, 12, 13, 14, 15, 16, 17,
+           18, 19, 20, 21, 22, 23, 24, 25, 26]
+    },
+    FRONT_PRIME: {
+        name: "F'",
+        axis: Axes.Z,
+        cubits: [ 0, 1, 2, 3, 4, 5, 6, 7, 8],
+        newOrder: [2, 5, 8, 1, 4, 7, 0, 3, 6,
+           9, 10, 11, 12, 13, 14, 15, 16, 17,
+           18, 19, 20, 21, 22, 23, 24, 25, 26]
+    },
+    RIGHT: {
+        name: "R",
+        axis: Axes.X_NEG,
+        cubits: [ 2, 5, 8, 11, 14, 17, 20, 23, 26 ],
+        newOrder: [0, 1, 8, 3, 4, 17, 6, 7, 26,
+           9, 10, 5, 12, 13, 14, 15, 16, 23,
+           18, 19, 2, 21, 22, 11, 24, 25, 20 ]
+    },
+    
+    RIGHT_PRIME: {
+        name: "R'",
+        axis: Axes.X,
+        cubits: [ 2, 5, 8, 11, 14, 17, 20, 23, 26 ],
+        newOrder: [0, 1, 20, 3, 4, 11, 6, 7, 2,
+           9, 10, 23, 12, 13, 14, 15, 16, 5,
+           18, 19, 26, 21, 22, 17, 24, 25, 8 ]
+    },
+    BACK: {
+        name: "B",
+        axis: Axes.Z,
+        cubits: [ 18, 19, 20, 21, 22, 23, 24, 25, 26 ],
+        newOrder: [0, 1, 2, 3, 4, 5, 6, 7, 8,
+            9, 10, 11, 12, 13, 14, 15, 16, 17,
+            20, 23, 26, 19, 22, 25, 18, 21, 24 ]
+    },
+    BACK_PRIME: {
+        name: "B'",
+        axis: Axes.Z_NEG,
+        cubits: [ 18, 19, 20, 21, 22, 23, 24, 25, 26 ],
+        newOrder: [0, 1, 2, 3, 4, 5, 6, 7, 8,
+            9, 10, 11, 12, 13, 14, 15, 16, 17,
+            24, 21, 18, 25, 22, 19, 26, 23, 20 ]
+    },
+    LEFT: {
+        name: "L",
+        axis: Axes.X,
+        cubits: [ 0, 3, 6, 9, 12, 15, 18, 21, 24 ],
+        newOrder: [18, 1, 2, 9, 4, 5, 0, 7, 8,
+            21, 10, 11, 12, 13, 14, 3, 16, 17,
+            24, 19, 20, 15, 22, 23, 6, 25, 26 ]
+    },
+    LEFT_PRIME: {
+        name: "L'",
+        axis: Axes.X_NEG,
+        cubits: [ 0, 3, 6, 9, 12, 15, 18, 21, 24 ],
+        newOrder: [6, 1, 2, 15, 4, 5, 24, 7, 8,
+            3, 10, 11, 12, 13, 14, 21, 16, 17,
+            0, 19, 20, 9, 22, 23, 18, 25, 26 ]
+    },
+    UP: {
+        name: "U",
+        axis: Axes.Y_NEG,
+        cubits: [ 0, 1, 2, 9, 10, 11, 18, 19, 20 ],
+        newOrder: [ 2, 11, 20, 3, 4, 5, 6, 7, 8,
+            1, 10, 19, 12, 13, 14, 15, 16, 17,
+            0, 9, 18, 21, 22, 23, 24, 25, 26 ]
+    },
+    UP_PRIME: {
+        name: "U'",
+        axis: Axes.Y,
+        cubits: [ 0, 1, 2, 9, 10, 11, 18, 19, 20 ],
+        newOrder: [ 18, 9, 0, 3, 4, 5, 6, 7, 8,
+            19, 10, 1, 12, 13, 14, 15, 16, 17,
+            20, 11, 2, 21, 22, 23, 24, 25, 26 ]
+    },
+    DOWN: {
+        name: "D",
+        axis: Axes.Y_NEG,
+        cubits: [ 6, 7, 8, 15, 16, 17, 24, 25, 26 ],
+        newOrder: [ 0, 1, 2, 3, 4, 5, 8, 17, 26,
+            9, 10, 11, 12, 13, 14, 7, 16, 25,
+            18, 19, 20, 21, 22, 23, 6, 15, 24 ]
+    },
+    DOWN_PRIME: {
+        name: "D'",
+        axis: Axes.Y,
+        cubits: [ 6, 7, 8, 15, 16, 17, 24, 25, 26 ],
+        newOrder: [0, 1, 2, 3, 4, 5, 24, 15, 6,
+            9, 10, 11, 12, 13, 14, 25, 16, 7,
+            18, 19, 20, 21, 22, 23, 26, 17, 8 ]
+    }
+};
+
+var FACES = [
+    Faces.FRONT, Faces.FRONT_PRIME,
+    Faces.RIGHT, Faces.RIGHT_PRIME,
+    Faces.BACK, Faces.BACK_PRIME,
+    Faces.LEFT, Faces.LEFT_PRIME,
+    Faces.UP, Faces.UP_PRIME,
+    Faces.DOWN, Faces.DOWN_PRIME
+];
+
+var FACE_MAP = {};
+
+for (var i = 0; i < FACES.length; i++) {
+    FACE_MAP[FACES[i].name] = FACES[i];
+}
+
 Cube = function(width, height, formula, startString, nodeId) {
     self = this;
 
@@ -23,14 +147,7 @@ Cube = function(width, height, formula, startString, nodeId) {
     var PI_2 = Math.PI / 2;
     var ANIMATE_INCREMENT = 0.01;
     
-    var X_AXIS = new THREE.Vector3(1, 0, 0);
-    var X_AXIS_NEG = new THREE.Vector3(-1, 0, 0);
-    var Y_AXIS = new THREE.Vector3(0, 1, 0);
-    var Y_AXIS_NEG = new THREE.Vector3(0, -1, 0);
-    var Z_AXIS = new THREE.Vector3(0, 0, 1);
-    var Z_AXIS_NEG = new THREE.Vector3(0, 0, -1);
-    
-    var rgbMap = {
+    var RGB_MAP = {
         'w': 0xffffff,
         'b': 0x0000cc,
         'y': 0xeeee00,
@@ -39,132 +156,13 @@ Cube = function(width, height, formula, startString, nodeId) {
         'r': 0xff0000,
         '.': 0x666666
     }
-    
+
     var WORLD = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26];
     
     var ALL_OBJECTS = [];
     
     var controls;
-    
-    var FRONT = {
-        name: "F",
-        axis: Z_AXIS_NEG,
-        cubits: [ 0, 1, 2, 3, 4, 5, 6, 7, 8],
-        newOrder: [6, 3, 0, 7, 4, 1, 8, 5, 2, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
-            23, 24, 25, 26]
-    };
-    
-    var FRONT_PRIME = {
-        name: "F'",
-        axis: Z_AXIS,
-        cubits: [ 0, 1, 2, 3, 4, 5, 6, 7, 8],
-        newOrder: [2, 5, 8, 1, 4, 7, 0, 3, 6, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22,
-            23, 24, 25, 26]
-    };
-    
-    var RIGHT = {
-        name: "R",
-        axis: X_AXIS_NEG,
-        cubits: [ 2, 5, 8, 11, 14, 17, 20, 23, 26 ],
-        newOrder: [0, 1, 8, 3, 4, 17, 6, 7, 26, 9, 10, 5, 12, 13, 14, 15, 16, 23, 18, 19, 2, 21, 22,
-            11, 24, 25, 20 ]
-    };
-    
-    var RIGHT_PRIME = {
-        name: "R'",
-        axis: X_AXIS,
-        cubits: [ 2, 5, 8, 11, 14, 17, 20, 23, 26 ],
-        newOrder: [0, 1, 20, 3, 4, 11, 6, 7, 2, 9, 10, 23, 12, 13, 14, 15, 16, 5, 18, 19, 26, 21, 22,
-            17, 24, 25, 8 ]
-    };
-    
-    var BACK = {
-        name: "B",
-        axis: Z_AXIS,
-        cubits: [ 18, 19, 20, 21, 22, 23, 24, 25, 26 ],
-        newOrder: [0, 1, 2, 3, 4, 5, 6, 7, 8,
-            9, 10, 11, 12, 13, 14, 15, 16, 17,
-            20, 23, 26, 19, 22, 25, 18, 21, 24 ]
-    };
-    
-    var BACK_PRIME = {
-        name: "B'",
-        axis: Z_AXIS_NEG,
-        cubits: [ 18, 19, 20, 21, 22, 23, 24, 25, 26 ],
-        newOrder: [0, 1, 2, 3, 4, 5, 6, 7, 8,
-            9, 10, 11, 12, 13, 14, 15, 16, 17,
-            24, 21, 18, 25, 22, 19, 26, 23, 20 ]
-    };
-    
-    var LEFT = {
-        name: "L",
-        axis: X_AXIS,
-        cubits: [ 0, 3, 6, 9, 12, 15, 18, 21, 24 ],
-        newOrder: [18, 1, 2, 9, 4, 5, 0, 7, 8,
-            21, 10, 11, 12, 13, 14, 3, 16, 17,
-            24, 19, 20, 15, 22, 23, 6, 25, 26 ]
-    };
-    
-    var LEFT_PRIME = {
-        name: "L'",
-        axis: X_AXIS_NEG,
-        cubits: [ 0, 3, 6, 9, 12, 15, 18, 21, 24 ],
-        newOrder: [6, 1, 2, 15, 4, 5, 24, 7, 8,
-            3, 10, 11, 12, 13, 14, 21, 16, 17,
-            0, 19, 20, 9, 22, 23, 18, 25, 26 ]
-    };
-    
-    var UP = {
-        name: "U",
-        axis: Y_AXIS_NEG,
-        cubits: [ 0, 1, 2, 9, 10, 11, 18, 19, 20 ],
-        newOrder: [ 2, 11, 20, 3, 4, 5, 6, 7, 8,
-            1, 10, 19, 12, 13, 14, 15, 16, 17,
-            0, 9, 18, 21, 22, 23, 24, 25, 26 ]
-    };
-    
-    var UP_PRIME = {
-        name: "U'",
-        axis: Y_AXIS,
-        cubits: [ 0, 1, 2, 9, 10, 11, 18, 19, 20 ],
-        newOrder: [ 18, 9, 0, 3, 4, 5, 6, 7, 8,
-            19, 10, 1, 12, 13, 14, 15, 16, 17,
-            20, 11, 2, 21, 22, 23, 24, 25, 26 ]
-    };
-    
-    var DOWN = {
-        name: "D",
-        axis: Y_AXIS_NEG,
-        cubits: [ 6, 7, 8, 15, 16, 17, 24, 25, 26 ],
-        newOrder: [ 0, 1, 2, 3, 4, 5, 8, 17, 26,
-            9, 10, 11, 12, 13, 14, 7, 16, 25,
-            18, 19, 20, 21, 22, 23, 6, 15, 24 ]
-    };
-    
-    var DOWN_PRIME = {
-        name: "D'",
-        axis: Y_AXIS,
-        cubits: [ 6, 7, 8, 15, 16, 17, 24, 25, 26 ],
-        newOrder: [0, 1, 2, 3, 4, 5, 24, 15, 6,
-            9, 10, 11, 12, 13, 14, 25, 16, 7,
-            18, 19, 20, 21, 22, 23, 26, 17, 8 ]
-    };
-    
-    var FACES = [
-        FRONT, FRONT_PRIME,
-        RIGHT, RIGHT_PRIME,
-        BACK, BACK_PRIME,
-        LEFT, LEFT_PRIME,
-        UP, UP_PRIME,
-        DOWN, DOWN_PRIME
-    ];
-    
-    var FACE_MAP = {};
-    
-    for (var i = 0; i < FACES.length; i++) {
-        FACE_MAP[FACES[i].name] = FACES[i];
-    }
-    
+
     function clearScene() {
         var obj, i;
         for ( i = ALL_OBJECTS.length - 1; i >= 0 ; i -- ) {
@@ -313,7 +311,7 @@ Cube = function(width, height, formula, startString, nodeId) {
     function stringToRgb(s) {
         var result = [];
         for (var i = 0; i < s.length; i++) {
-            result.push(rgbMap[s.charAt(i)])
+            result.push(RGB_MAP[s.charAt(i)])
         }
         return result;
     }
@@ -327,14 +325,14 @@ Cube = function(width, height, formula, startString, nodeId) {
     
         // input order: z+,x+,z-,x-,y+,y-
         // order to add materials: x+,x-,y+,y-,z+,z-
-        array.push( new THREE.MeshBasicMaterial( { color: rgbColors[1] } ) );
-        array.push( new THREE.MeshBasicMaterial( { color: rgbColors[3] } ) );
-        array.push( new THREE.MeshBasicMaterial( { color: rgbColors[4] } ) );
-        array.push( new THREE.MeshBasicMaterial( { color: rgbColors[5] } ) );
-        array.push( new THREE.MeshBasicMaterial( { color: rgbColors[0] } ) );
-        array.push( new THREE.MeshBasicMaterial( { color: rgbColors[2] } ) );
+        var indices = [ 1, 3, 4, 5, 0, 2 ];
+        for (var i = 0; i < indices.length; i++) {
+            array.push(new THREE.MeshBasicMaterial( {
+                color: rgbColors[indices[i]],
+            } ));
+        }
     
-        return new THREE.MeshFaceMaterial( array );
+        return new THREE.MeshFaceMaterial(array);
     }
     
     this.createOneCubit = function(x, y, z, cubitIndex) {
@@ -532,39 +530,17 @@ Cube = function(width, height, formula, startString, nodeId) {
         }
         isRotating = true;
     }
-    
-    function rotateFace(face) {
+
+    this.rotateFace = function(face) {
         rotateFaces([ face ]);
     }
-    
-    document.onkeydown = function() {
-        var shift = window.event.shiftKey;
-        var c = window.event.keyCode;
-        switch (c) {
-            case 66: // b
-                rotateFace(shift ? BACK_PRIME : BACK);
-                break;
-            case 68: // b
-                rotateFace(shift ? DOWN_PRIME : DOWN);
-                break;
-            case 70: // f
-                rotateFace(shift ? FRONT_PRIME : FRONT);
-                break;
-            case 76: /// l
-                rotateFace(shift ? LEFT_PRIME : LEFT);
-                break;
-            case 82: // r
-                rotateFace(shift ? RIGHT_PRIME : RIGHT);
-                break;
-            case 85: // u
-                rotateFace(shift ? UP_PRIME : UP);
-                break;
-            default:
-                console.log("Key: " + c);
-        }
-    
-    };
-    
+
+//    var KEY_FACE_MAP = {
+//            
+//            { 'f', true } : "shift f",
+//            { 'f', false } : "f"
+//    };
+
     function testCubitColors() {
         for (var i = 0; i < CUBIT_COLOR_INDICES.length; i++) {
             var oi = CUBIT_COLOR_INDICES[i];
@@ -615,15 +591,6 @@ Cube = function(width, height, formula, startString, nodeId) {
     
     this.runCube = function() {
         this.addCubeToScene(this.scene);
-    //    rotateFace(FRONT);
-    //    rotateFace(FRONT);
-    //    rotateFace(RIGHT);
-    //    rotateFace(FRONT);
-    //    rotateFace(LEFT);
-    //    rotateFace(DOWN);
-    //    rotateFace(UP);
-    //    rotateFace(FRONT);
-    //    rotateFace(FRONT);
     }
 
 //    function tmp() {
@@ -748,27 +715,66 @@ function modifyDom() {
             }
         }
         cube.runCube();
-//        this.renderer.render(this.scene, this.camera);
-//        controls.update();
     }
-
-
-//    camera.up
-//    camera.lookAt(new THREE.Vector3(0, -200, 0));
-
-
-//    var axes2 = new THREE.AxisHelper( 1000);
-//    scene.add(axes2);
-
 }
 
 function run() {
     modifyDom();
     requestAnimationFrame(animate);
-
-//    tmp();
-//    runCube();
-
 }
 
-//run();
+function findId(node) {
+    while (node != null) {
+        var cls = node.attributes['class']; 
+        if (cls && cls.textContent == "CedCube") {
+            return node.attributes['id'].textContent;
+        } else {
+            node = node.parentElement;
+        }
+    }
+    return null;
+}
+
+var x = 0, y = 0;
+document.addEventListener('mousemove', function(e){
+    x = e.pageX
+    y = e.pageY;
+}, false);
+
+document.addEventListener('keyup', function(e){
+    console.log(x + ' ' + y);
+    var elementMouseIsOver = document.elementFromPoint(x, y);
+    var id = findId(elementMouseIsOver);
+    console.log("Id: " + id);
+    if (id) {
+        var cube = cubeMap[id];
+        var shift = window.event.shiftKey;
+        var c = window.event.keyCode;
+        var face;
+        switch (c) {
+            case 66: // b
+                face = shift ? Faces.BACK_PRIME : Faces.BACK;
+                break;
+            case 68: // d
+                face = shift ? Faces.DOWN_PRIME : Faces.DOWN;
+                break;
+            case 70: // f
+                face = shift ? Faces.FRONT_PRIME : Faces.FRONT;
+                break;
+            case 76: /// l
+                face = shift ? Faces.LEFT_PRIME : Faces.LEFT;
+                break;
+            case 82: // r
+                face = shift ? Faces.RIGHT_PRIME : Faces.RIGHT;
+                break;
+            case 85: // u
+                face = shift ? Faces.UP_PRIME : Faces.UP;
+                break;
+            default:
+                console.log("Key: " + c);
+        }
+        if (face) {
+            cube.rotateFace(face);
+        }
+    }
+}, false);
