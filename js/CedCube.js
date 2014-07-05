@@ -361,34 +361,6 @@ Cube = function(width, height, formula, startString, nodeId) {
         return result;
     }
     
-    function sign(x){
-        if( +x === x ) { // check if a number was given
-            return (x === 0) ? x : (x > 0) ? 1 : -1;
-        }
-        return NaN;
-    }
-    
-    function clampPi(x) {
-        var DELTA = 0.75;
-        var result = x;
-        var s = sign(x);
-        var ax = Math.abs(x);
-        if (ax < DELTA) {
-            result = 0;
-        } else if (Math.abs(ax - PI_2) < DELTA) {
-            result = s * PI_2;
-        } else if (Math.abs(ax - Math.PI) < DELTA) {
-            result = s * Math.PI;
-        } else if (Math.abs(ax - 3 * PI_2 / 2) < DELTA) {
-            result = s * 3 * PI_2 / 2;
-        } else if (Math.abs(ax - Math.PI * 2) < DELTA) {
-            result = Math.PI * 2;
-        } else {
-            alert("Couldn't clamp " + x);
-        }
-        return result;
-    }
-    
     function roundMultiple(n, multiple) {
         if (! multiple) {
             multiple = W;
@@ -535,12 +507,6 @@ Cube = function(width, height, formula, startString, nodeId) {
         rotateFaces([ face ]);
     }
 
-//    var KEY_FACE_MAP = {
-//            
-//            { 'f', true } : "shift f",
-//            { 'f', false } : "f"
-//    };
-
     function testCubitColors() {
         for (var i = 0; i < CUBIT_COLOR_INDICES.length; i++) {
             var oi = CUBIT_COLOR_INDICES[i];
@@ -563,29 +529,9 @@ Cube = function(width, height, formula, startString, nodeId) {
         }
     }
     
-    function testclampPi() {
-        assertEquals(clampPi(6.4), 6.4);
-        assertEquals(clampPi(6.29), Math.PI * 2);
-        assertEquals(clampPi(6.28), Math.PI * 2);
-        assertEquals(clampPi(6.27), Math.PI * 2);
-        assertEquals(clampPi(4.8), 4.8);
-        assertEquals(clampPi(4.72), Math.PI * 3 / 2);
-        assertEquals(clampPi(4.71), Math.PI * 3 / 2);
-        assertEquals(clampPi(4.70), Math.PI * 3 / 2);
-        assertEquals(clampPi(3.15), Math.PI);
-        assertEquals(clampPi(3.14), Math.PI);
-        assertEquals(clampPi(3.13), Math.PI);
-        assertEquals(clampPi(1.58), 1.58);
-        assertEquals(clampPi(1.57), PI_2);
-        assertEquals(clampPi(1.56), PI_2);
-        assertEquals(clampPi(0.01), 0);
-        assertEquals(clampPi(0.1), 0.1);
-    }
-    
     // @Tests
     
     //testCubitColors();
-    //testclampPi();
     //testRoundMultiple();
     console.log("Run all tests");
     
