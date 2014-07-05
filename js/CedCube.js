@@ -171,7 +171,6 @@ Cube = function(width, height, formula, startString, nodeId) {
             scene.remove(ALL_OBJECTS[i]);
         }
         ALL_OBJECTS = [];
-        cubes = [];
     }
     
     this.addCubeToScene = function(scene) {
@@ -449,7 +448,7 @@ Cube = function(width, height, formula, startString, nodeId) {
                 objects[i].applyMatrix(matrix);
     //            renderer.render(scene, camera);
             }
-            console.log("Rotation after applyMatrix: " + objects[0].rotation.z)
+//            console.log("Rotation after applyMatrix: " + objects[0].rotation.z)
     
             lastTime = new Date().getTime();
         } else if (isRotating) {
@@ -689,14 +688,33 @@ function animate() {
     requestAnimationFrame(animate);
 }
 
+function parseParams(params) {
+    var result = {};
+    var pa = params.split(",");
+    for (var i = 0; i < pa.length; i++) {
+        var pi = pa[i].split("=");
+        result[pi[0]] = pi[1];
+    }
+    return result;
+}
+
+function getParam(paramMap, key, def) {
+    var result = def;
+    if (paramMap[key]) {
+        result = paramMap[key];
+    }
+    return result;
+}
+
 function modifyDom() {
     var nodes = document.getElementsByClassName('CedCube');
     for (var i = 0; i < nodes.length; i++) {
         var node = nodes[i];
         console.log("element: " + node);
-        var f = node.attributes['formula'].textContent;
-        var width = parseInt(node.attributes['width'].textContent);
-        var height = parseInt(node.attributes['height'].textContent)
+        var paramMap = parseParams(node.attributes['cc-params'].textContent);
+        var f = getParam(paramMap, 'formula', null);
+        var width = parseInt(getParam(paramMap, 'width', '300'));
+        var height = parseInt(getParam(paramMap, 'height', '300'));
         var id = node.attributes.id.textContent;
         var colorString =
             "gggggggggrrrrrrrrrbbbbbbbbbooooooooowwwwwwwwwyyyyyyyyy";
