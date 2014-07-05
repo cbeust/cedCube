@@ -3,6 +3,11 @@ body {
     margin: 0px;
 }
 
+a {
+   text-decoration: none;
+   font-size: 0.8em;
+}
+
 .container {
     background-color: #ffffff;
 }
@@ -13,18 +18,4 @@ body {
 	color: #ffffff;
 	text-align: center;
 	font-family: Roboto, arial, sans-serif;
-}
-
-a {
-	 text-decoration: none;
-	 font-size: 0.8em;
-}
-
-._CedCubeInterface {
-    position: absolute;
-    width: 100%;
-    margin: 0 auto;
-    background-color: #ff0000;
-    top: 0;
-#    left: 25%;
 }
