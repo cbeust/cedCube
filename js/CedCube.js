@@ -9,6 +9,7 @@ Axes = {
 
 Faces = {
     FRONT: {
+        key: "f",
         name: "F",
         axis: Axes.Z_NEG,
         cubits: [ 0, 1, 2, 3, 4, 5, 6, 7, 8],
@@ -17,6 +18,7 @@ Faces = {
            18, 19, 20, 21, 22, 23, 24, 25, 26]
     },
     FRONT_PRIME: {
+        key: "F",
         name: "F'",
         axis: Axes.Z,
         cubits: [ 0, 1, 2, 3, 4, 5, 6, 7, 8],
@@ -25,6 +27,7 @@ Faces = {
            18, 19, 20, 21, 22, 23, 24, 25, 26]
     },
     RIGHT: {
+        key: "r",
         name: "R",
         axis: Axes.X_NEG,
         cubits: [ 2, 5, 8, 11, 14, 17, 20, 23, 26 ],
@@ -34,6 +37,7 @@ Faces = {
     },
     
     RIGHT_PRIME: {
+        key: "R",
         name: "R'",
         axis: Axes.X,
         cubits: [ 2, 5, 8, 11, 14, 17, 20, 23, 26 ],
@@ -42,6 +46,7 @@ Faces = {
            18, 19, 26, 21, 22, 17, 24, 25, 8 ]
     },
     BACK: {
+        key: "b",
         name: "B",
         axis: Axes.Z,
         cubits: [ 18, 19, 20, 21, 22, 23, 24, 25, 26 ],
@@ -50,6 +55,7 @@ Faces = {
             20, 23, 26, 19, 22, 25, 18, 21, 24 ]
     },
     BACK_PRIME: {
+        key: "B",
         name: "B'",
         axis: Axes.Z_NEG,
         cubits: [ 18, 19, 20, 21, 22, 23, 24, 25, 26 ],
@@ -58,6 +64,7 @@ Faces = {
             24, 21, 18, 25, 22, 19, 26, 23, 20 ]
     },
     LEFT: {
+        key: "l",
         name: "L",
         axis: Axes.X,
         cubits: [ 0, 3, 6, 9, 12, 15, 18, 21, 24 ],
@@ -66,6 +73,7 @@ Faces = {
             24, 19, 20, 15, 22, 23, 6, 25, 26 ]
     },
     LEFT_PRIME: {
+        key: "L",
         name: "L'",
         axis: Axes.X_NEG,
         cubits: [ 0, 3, 6, 9, 12, 15, 18, 21, 24 ],
@@ -74,6 +82,7 @@ Faces = {
             0, 19, 20, 9, 22, 23, 18, 25, 26 ]
     },
     UP: {
+        key: "u",
         name: "U",
         axis: Axes.Y_NEG,
         cubits: [ 0, 1, 2, 9, 10, 11, 18, 19, 20 ],
@@ -82,6 +91,7 @@ Faces = {
             0, 9, 18, 21, 22, 23, 24, 25, 26 ]
     },
     UP_PRIME: {
+        key: "U",
         name: "U'",
         axis: Axes.Y,
         cubits: [ 0, 1, 2, 9, 10, 11, 18, 19, 20 ],
@@ -90,6 +100,7 @@ Faces = {
             20, 11, 2, 21, 22, 23, 24, 25, 26 ]
     },
     DOWN: {
+        key: "d",
         name: "D",
         axis: Axes.Y_NEG,
         cubits: [ 6, 7, 8, 15, 16, 17, 24, 25, 26 ],
@@ -98,6 +109,7 @@ Faces = {
             18, 19, 20, 21, 22, 23, 6, 15, 24 ]
     },
     DOWN_PRIME: {
+        key: "D",
         name: "D'",
         axis: Axes.Y,
         cubits: [ 6, 7, 8, 15, 16, 17, 24, 25, 26 ],
@@ -117,10 +129,13 @@ var FACES = [
 ];
 
 var FACE_MAP = {};
+var FACE_KEY_MAP = {};
 
 for (var i = 0; i < FACES.length; i++) {
     FACE_MAP[FACES[i].name] = FACES[i];
+    FACE_KEY_MAP[FACES[i].key] = FACES[i].name;
 }
+
 
 Cube = function(width, height, formula, startString, nodeId) {
     self = this;
@@ -521,10 +536,10 @@ Cube = function(width, height, formula, startString, nodeId) {
                 face = FACE_MAP[c.toUpperCase()];
             } else if (c == c.toUpperCase()) {
                 face = FACE_MAP[c.toUpperCase() + "'"];
-            } else {
-                alert("Unknown face: " + c);
             }
-            result.push(face);
+            if (face != null) { // could have spaces in the formula
+                result.push(face);
+            }
         }
         return result;
     }
@@ -683,6 +698,15 @@ function modifyDom() {
 
         console.log("Created cube " + id + " " + cube.width + " " + cube.height);
 
+        function toFriendlyName(f) {
+            var result = "";
+            for (var i = 0; i < f.length; i++) {
+                var friendly = FACE_KEY_MAP[f.charAt(i)];
+                result = result + (friendly ? friendly : f.charAt(i));
+            }
+            return result;
+        }
+
         if (f) {
             var div = document.createElement("div");
             div.setAttribute("class", "CedCubeInterface");
@@ -693,7 +717,7 @@ function modifyDom() {
                 // Formula text
                 var textDiv = document.createElement("div");
                 textDiv.setAttribute("class", "formulaText");
-                textDiv.appendChild(document.createTextNode(f));
+                textDiv.appendChild(document.createTextNode(toFriendlyName(f)));
                 div.appendChild(textDiv);
             }
 
