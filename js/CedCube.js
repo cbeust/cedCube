@@ -132,8 +132,8 @@ Cube = function(width, height, formula, startString, nodeId) {
     this.nodeId = nodeId;
 
     this.camera = new THREE.PerspectiveCamera(40, width / height, 1, 10000);
-    this.camera.position.set(1000, 600, 1000);
-    this.renderer = new THREE.CanvasRenderer();
+    this.camera.position.set(700, 600, 1200);
+    this.renderer = new THREE.WebGLRenderer();
     this.renderer.setSize(width, height);
     this.renderer.setClearColor(0x888888, 1);
     document.getElementById(nodeId).appendChild(this.renderer.domElement);
@@ -142,7 +142,7 @@ Cube = function(width, height, formula, startString, nodeId) {
     this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement)
 
     var W = 200;
-    var CUBIT_SIZE = W - 4;
+    var CUBIT_SIZE = W - 6;
     
     var PI_2 = Math.PI / 2;
     var ANIMATE_INCREMENT = 0.01;
@@ -328,19 +328,65 @@ Cube = function(width, height, formula, startString, nodeId) {
         var indices = [ 1, 3, 4, 5, 0, 2 ];
         for (var i = 0; i < indices.length; i++) {
             array.push(new THREE.MeshBasicMaterial( {
-                color: rgbColors[indices[i]],
+                color: rgbColors[indices[i]]
             } ));
         }
     
         return new THREE.MeshFaceMaterial(array);
     }
-    
+
+    function differInOneDimension(p1, p2) {
+        return (p1.x == p2.x && p1.y == p2.y && p1.z != p2.z)
+                || (p1.x != p2.x && p1.y == p2.y && p1.z == p2.z)
+                || (p1.x == p2.x && p1.y != p2.y && p1.z == p2.z);
+    }
+
+    function verticesToLines(vertices) {
+        var result = [];
+        for (var i = 0; i < vertices.length - 1; i++) {
+            for (var j = i + 1; j < vertices.length; j++) {
+                if (differInOneDimension(vertices[i], vertices[j])) {
+                    console.log("Found line: "
+                            + vertices[i].x + " " + vertices[i].y + " " + vertices[i].z
+                            + " - "
+                            + vertices[j].x + " " + vertices[j].y + " " + vertices[j].z);
+                    var geometry = new THREE.Geometry();
+                    geometry.vertices.push(vertices[i]);
+                    geometry.vertices.push(vertices[j]);
+                    result.push(geometry);
+                }
+            }
+        }
+        return result;
+    }
+
     this.createOneCubit = function(x, y, z, cubitIndex) {
     //    console.log("Creating cubit " + cubitIndex  + " " + x + "," + y + "," + z);
         var cubeMaterials = this.getMaterialArray(cubitIndex);
         var cubeGeometry = new THREE.BoxGeometry(CUBIT_SIZE, CUBIT_SIZE, CUBIT_SIZE);
         cube = new THREE.Mesh(cubeGeometry, cubeMaterials);
         cube.position = new THREE.Vector3(x, y, z);
+
+        // Enable to show lines between cubes, however they don't rotate
+        // and they look ugly
+        if (false) {
+            var geometry = new THREE.Geometry();
+            var vertices = [];
+            for (var i = 0; i < cubeGeometry.vertices.length; i++) {
+                var vertex = cubeGeometry.vertices[i];
+                var p = cube.position;
+                vertices.push(new THREE.Vector3(vertex.x + p.x, vertex.y + p.y, vertex.z + p.z));
+            }
+            var lines = verticesToLines(vertices);
+            var material =  new THREE.LineBasicMaterial({
+                color: 0x0000ff
+            });
+
+            for (var i = 0; i < lines.length; i++) {
+                var line = new THREE.Line(lines[i], material);
+                this.scene.add(line);
+            }
+        }
         return cube;
     }
     
