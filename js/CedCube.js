@@ -675,6 +675,7 @@ function getParam(paramMap, key, def) {
 
 function modifyDom() {
     var nodes = document.getElementsByClassName('CedCube');
+    var defaultStartString = "gggggggggrrrrrrrrrbbbbbbbbbooooooooowwwwwwwwwyyyyyyyyy";
     for (var i = 0; i < nodes.length; i++) {
         var node = nodes[i];
         console.log("element: " + node);
@@ -682,11 +683,10 @@ function modifyDom() {
         var f = getParam(paramMap, 'formula', null);
         var width = parseInt(getParam(paramMap, 'width', '300'));
         var height = parseInt(getParam(paramMap, 'height', '300'));
+        var startString = getParam(paramMap, "startString", defaultStartString);
+        startString = startString.replace(new RegExp(" ", 'g'), "");
         var id = node.attributes.id.textContent;
-        var colorString =
-            "gggggggggrrrrrrrrrbbbbbbbbbooooooooowwwwwwwwwyyyyyyyyy";
-        //    "rrr......bb.bb.";
-        var cube = new Cube(width, height, f, colorString, id);
+        var cube = new Cube(width, height, f, startString, id);
         cubeMap[id] = cube;
 
         console.log("Created cube " + id + " " + cube.width + " " + cube.height);
