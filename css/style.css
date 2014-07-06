@@ -8,14 +8,14 @@ a {
    font-size: 0.8em;
 }
 
-.container {
-    background-color: #ffffff;
-}
-
-.CedCubeInterface {
+.cc-interface {
 	border: solid 1px black;
 	background-color: #cccccc;
 	color: #ffffff;
 	text-align: center;
 	font-family: Roboto, arial, sans-serif;
+}
+
+.cc-link {
+	margin: 5px;
 }

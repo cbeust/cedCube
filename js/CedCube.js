@@ -173,28 +173,28 @@ Cube = function(width, height, formula, startString, nodeId) {
         'X': 0x000000
     }
 
-    var WORLD = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26];
+    var ORIGINAL_WORLD = [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26];
+    var WORLD = ORIGINAL_WORLD;
     
     var ALL_OBJECTS = [];
     
     var controls;
 
-    function clearScene() {
-        var obj, i;
-        for ( i = ALL_OBJECTS.length - 1; i >= 0 ; i -- ) {
-            scene.remove(ALL_OBJECTS[i]);
+    this.clearScene = function() {
+        for (var i = ALL_OBJECTS.length - 1; i >= 0 ; i -- ) {
+            this.scene.remove(ALL_OBJECTS[i]);
         }
         ALL_OBJECTS = [];
     }
     
-    this.addCubeToScene = function(scene) {
-        clearScene();
+    this.addCubeToScene = function() {
+        this.clearScene();
         var cubitIndex = 0;
         for (var z = 1; z >= -1; z--) {
             for (var y = 1; y >= -1; y--) {
                 for (var x = -1; x <= 1; x++) {
                     var cube = this.createOneCubit(x * W, y * W, z * W, WORLD[cubitIndex++]);
-                    scene.add(cube);
+                    this.scene.add(cube);
                     ALL_OBJECTS.push(cube);
                 }
             }
@@ -467,6 +467,15 @@ Cube = function(width, height, formula, startString, nodeId) {
         assertEquals(roundMultiple(-101), -100);
     }
 
+    this.setNewOrder = function(newOrder) {
+        var newObjects = [];
+        for (var i = 0; i < newOrder.length; i++) {
+            newObjects[i] = ALL_OBJECTS[newOrder[i]];
+        }
+        ALL_OBJECTS = newObjects;
+        this.renderer.render(this.scene, this.camera);
+    }
+
     this.animate = function() {
 //        console.log("Animating id " + this.nodeId);
         if (rotateCount > 0) {
@@ -510,13 +519,7 @@ Cube = function(width, height, formula, startString, nodeId) {
             if (currentFace.newOrder.length != 27) {
                 alert("Wrong newOrder");
             }
-            var debug = "";
-            for (var i = 0; i < currentFace.newOrder.length; i++) {
-                debug += currentFace.newOrder[i] + " ";
-                newObjects[i] = ALL_OBJECTS[currentFace.newOrder[i]];
-            }
-    //        console.log("New order: " + debug);
-            ALL_OBJECTS = newObjects;
+            this.setNewOrder(currentFace.newOrder);
     
             facesToRotate.shift();
             lastTime = 0;
@@ -552,7 +555,12 @@ Cube = function(width, height, formula, startString, nodeId) {
         }
         return result;
     }
-    
+
+    this.reset = function() {
+        console.log("Resetting " + this.formula);
+        this.addCubeToScene();
+    }
+
     this.playCubeFormula = function() {
         console.log("Playing " + this.formula);
         rotateFaces(formulaToFaces(this.formula));
@@ -606,7 +614,7 @@ Cube = function(width, height, formula, startString, nodeId) {
     console.log("Run all tests");
     
     this.runCube = function() {
-        this.addCubeToScene(this.scene);
+        this.addCubeToScene();
     }
 
 //    function tmp() {
@@ -661,6 +669,14 @@ cubeMap = {};
 
 function playFormula(nodeId) {
     cubeMap[nodeId].playCubeFormula();
+    if (window.event) {
+        window.event.returnValue = false;
+    }
+    return false;
+}
+
+function reset(nodeId) {
+    cubeMap[nodeId].reset();
     if (window.event) {
         window.event.returnValue = false;
     }
@@ -722,7 +738,7 @@ function modifyDom() {
 
         if (f) {
             var div = document.createElement("div");
-            div.setAttribute("class", "CedCubeInterface");
+            div.setAttribute("class", "cc-interface");
             div.setAttribute("style", "width:" + (width - 2));
             node.appendChild(div);
 
@@ -734,14 +750,17 @@ function modifyDom() {
                 div.appendChild(textDiv);
             }
 
-            {
-                // Play
+            function addLink(fun, name) {
                 var a = document.createElement("a");
+                a.setAttribute("class", "cc-link");
                 a.setAttribute("href", "");
-                a.setAttribute("onclick", "playFormula('" + id + "')");
-                a.appendChild(document.createTextNode("Play"));
+                a.setAttribute("onclick", fun + "('" + id + "')");
+                a.appendChild(document.createTextNode(name));
                 div.appendChild(a);
             }
+
+            addLink("playFormula", "Play");
+            addLink("reset", "Reset");
         }
         cube.runCube();
     }
