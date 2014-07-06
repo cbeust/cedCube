@@ -791,7 +791,8 @@ document.addEventListener('mousemove', function(e){
 
 document.addEventListener('keyup', function(e){
     console.log(x + ' ' + y);
-    var elementMouseIsOver = document.elementFromPoint(x, y);
+    var elementMouseIsOver =
+        document.elementFromPoint(x - window.pageXOffset, y - window.pageYOffset);
     var id = findId(elementMouseIsOver);
     console.log("Id: " + id);
     if (id) {
