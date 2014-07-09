@@ -76,7 +76,7 @@ This is the easy part where you could pretty much guess all these moves by yours
 
 All four edges are in place, now we want to position three corners so that we end up with the first layer finished except for one corner.  Move a corner under its final position and apply one of the three following maneuvers:
 
-<table>
+<table class="cc-table">
 	<tr>
 		<td>
 			<div id="1a-0" class="CedCube"
@@ -95,6 +95,69 @@ All four edges are in place, now we want to position three corners so that we en
 		</td>
 	</tr>
 </table>
+
+<p>
+Note that even though the third maneuver looks intimidating, it's actually quite 
+simple: we can't place the corner directly in its final location if it's 
+facing downwards, so we move the cube in order to reach one of the first two 
+scenarios, which we can then solve.
+</p>
+
+<p>
+At the end of this step, your cube will look like this:
+
+</p>
+
+<table class="cc-table">
+	<tr>
+		<td>
+			<div id="1a-3" class="CedCube"
+		    	cc-params="startString=......... ......... ......... ......... wwwwwwww. .........">
+			</div>
+		</td>
+	</tr>
+</table>
+
+We will use this missing corner (also called "working corner") to install the second layer.
+
+<h3>
+1b) Position three edges in the middle layer
+</h3>
+
+Our goal in this phase is to bring the cube with the first two layers complete except for one corner and one edge:
+
+<table class="cc-table">
+	<tr>
+		<td>
+			<div id="1b-0" class="CedCube"
+		    	cc-params="startString=oo.oo.... .bb.bb... ......... ......... wwwwwwww. .........">
+			</div>
+		</td>
+	</tr>
+</table>
+
+To achieve this, we are going to position three middle edge cubies using the 
+working corner. For each edge, you have two possible configurations. 
+Bring the working corner on top of the edge you want to install, and use one of 
+the two following maneuvers:
+
+<table class="cc-table">
+	<tr>
+		<td>
+			<div id="1b-1" class="CedCube"
+		    	cc-params="formula=R'D'R,startString=oo.oo..b. .bb.bb... ......... ......... wwwwwwww. .o.......">
+			</div>
+		</td>
+		<td>
+			<div id="1b-2" class="CedCube"
+		    	cc-params="formula=FDF',startString=oo.oo.... .bb.bb.o. ......... ......... wwwwwwww. .....b...">
+			</div>
+		</td>
+	</tr>
+</table>
+
+
+
 
 	</body>
 </html>
