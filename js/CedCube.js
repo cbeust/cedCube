@@ -752,7 +752,7 @@ function modifyDom() {
             function addLink(fun, name) {
                 var a = document.createElement("a");
                 a.setAttribute("class", "cc-link");
-                a.setAttribute("href", "");
+//                a.setAttribute("href", "");
                 a.setAttribute("onclick", fun + "('" + id + "')");
                 a.appendChild(document.createTextNode(name));
                 div.appendChild(a);
