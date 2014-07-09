@@ -542,13 +542,12 @@ Cube = function(width, height, formula, startString, nodeId) {
     function formulaToFaces(formula) {
         var result = [];
         for (var i = 0; i < formula.length; i++) {
-            var c = formula.charAt(i);
-            var face;
-            if (c == c.toLowerCase()) {
-                face = FACE_MAP[c.toUpperCase()];
-            } else if (c == c.toUpperCase()) {
-                face = FACE_MAP[c.toUpperCase() + "'"];
-            }
+            var c = "" + formula.charAt(i);
+            if (i < formula.length + 1 && formula.charAt(i + 1) == '\'') {
+                c = c + "'";
+                i = i + 1;
+            } 
+            var face = FACE_MAP[c.toUpperCase()];
             if (face != null) { // could have spaces in the formula
                 result.push(face);
             }
@@ -727,14 +726,14 @@ function modifyDom() {
 
         console.log("Created cube " + id + " " + cube.width + " " + cube.height);
 
-        function toFriendlyName(f) {
-            var result = "";
-            for (var i = 0; i < f.length; i++) {
-                var friendly = FACE_KEY_MAP[f.charAt(i)];
-                result = result + (friendly ? friendly : f.charAt(i));
-            }
-            return result;
-        }
+//        function toFriendlyName(f) {
+//            var result = "";
+//            for (var i = 0; i < f.length; i++) {
+//                var friendly = FACE_KEY_MAP[f.charAt(i)];
+//                result = result + (friendly ? friendly : f.charAt(i));
+//            }
+//            return result;
+//        }
 
         if (f) {
             var div = document.createElement("div");
@@ -746,7 +745,7 @@ function modifyDom() {
                 // Formula text
                 var textDiv = document.createElement("div");
                 textDiv.setAttribute("class", "formulaText");
-                textDiv.appendChild(document.createTextNode(toFriendlyName(f)));
+                textDiv.appendChild(document.createTextNode(f));
                 div.appendChild(textDiv);
             }
 
@@ -789,7 +788,7 @@ document.addEventListener('mousemove', function(e){
     y = e.pageY;
 }, false);
 
-document.addEventListener('keyup', function(e){
+window.onkeyup = function(e){
     console.log(x + ' ' + y);
     var elementMouseIsOver =
         document.elementFromPoint(x - window.pageXOffset, y - window.pageYOffset);
@@ -797,8 +796,8 @@ document.addEventListener('keyup', function(e){
     console.log("Id: " + id);
     if (id) {
         var cube = cubeMap[id];
-        var shift = window.event.shiftKey;
-        var c = window.event.keyCode;
+        var shift = e.shiftKey;
+        var c = e.keyCode;
         var face;
         switch (c) {
             case 66: // b
@@ -826,4 +825,4 @@ document.addEventListener('keyup', function(e){
             cube.rotateFace(face);
         }
     }
-}, false);
+};
