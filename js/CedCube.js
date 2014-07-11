@@ -744,7 +744,7 @@ function modifyDom() {
             {
                 // Formula text
                 var textDiv = document.createElement("div");
-                textDiv.setAttribute("class", "formulaText");
+                textDiv.setAttribute("class", "cc-formula-text");
                 textDiv.appendChild(document.createTextNode(f));
                 div.appendChild(textDiv);
             }
