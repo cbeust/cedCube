@@ -12,15 +12,15 @@ a:hover {
     cursor:pointer;
 }
 
+td {
+	padding: 10px;
+}
+
 .cc-table {
 	margin-top: 15px;
 	margin-bottom: 15px;
 	margin-left: auto;
 	margin-right: auto;
-}
-
-td {
-	padding: 10px;
 }
 
 .cc-interface {
