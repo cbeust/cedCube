@@ -147,7 +147,7 @@ Cube = function(width, height, formula, startString, nodeId) {
     this.nodeId = nodeId;
 
     this.camera = new THREE.PerspectiveCamera(40, width / height, 1, 10000);
-    this.camera.position.set(700, 600, 1200);
+    this.camera.position.set(700, 700, 1200);
     this.renderer = new THREE.WebGLRenderer();
     this.renderer.setSize(width, height);
     this.renderer.setClearColor(0x888888, 1);
