@@ -2,7 +2,7 @@
     var Axes = {
         X: new THREE.Vector3(1, 0, 0),
         X_NEG: new THREE.Vector3(-1, 0, 0),
-        Y:  new THREE.Vector3(0, 1, 0),
+        Y: new THREE.Vector3(0, 1, 0),
         Y_NEG: new THREE.Vector3(0, -1, 0),
         Z: new THREE.Vector3(0, 0, 1),
         Z_NEG: new THREE.Vector3(0, 0, -1)
@@ -36,7 +36,6 @@
                9, 10, 5, 12, 13, 14, 15, 16, 23,
                18, 19, 2, 21, 22, 11, 24, 25, 20 ]
         },
-        
         RIGHT_PRIME: {
             key: "R",
             name: "R'",
@@ -386,7 +385,7 @@
         }
 
         this.createOneCubit = function(x, y, z, cubitIndex) {
-        //    console.log("Creating cubit " + cubitIndex  + " " + x + "," + y + "," + z);
+        //    console.log("Creating cubit " + cubitIndex + " " + x + "," + y + "," + z);
             var cubeMaterials = this.getMaterialArray(cubitIndex);
             var cubeGeometry = new THREE.BoxGeometry(CUBIT_SIZE, CUBIT_SIZE, CUBIT_SIZE);
             cube = new THREE.Mesh(cubeGeometry, cubeMaterials);
@@ -403,7 +402,7 @@
                     vertices.push(new THREE.Vector3(vertex.x + p.x, vertex.y + p.y, vertex.z + p.z));
                 }
                 var lines = verticesToLines(vertices);
-                var material =  new THREE.LineBasicMaterial({
+                var material = new THREE.LineBasicMaterial({
                     color: 0x0000ff
                 });
 
@@ -621,14 +620,14 @@
     //        var material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
     //    //    {
     //    //        var pivot1 = new THREE.Object3D();
-    //    //        var geometry =  new THREE.BoxGeometry( 40, 40, 40);
+    //    //        var geometry = new THREE.BoxGeometry( 40, 40, 40);
     //    //        var cube = new THREE.Mesh(geometry, material);
     //    //        cube.position.x = 50;
     //    //        pivot1.add(cube);
     //    //        scene.add(pivot1);
     //    //    }
     //    
-    //        var geometry =  new THREE.BoxGeometry( 40, 40, 40);
+    //        var geometry = new THREE.BoxGeometry( 40, 40, 40);
     //        cube = new THREE.Mesh(geometry, material);
     //        cube.position.x = 50;
     //        scene.add(cube);
@@ -784,12 +783,12 @@
     }
 
     var x = 0, y = 0;
-    document.addEventListener('mousemove', function(e){
+    document.addEventListener('mousemove', function(e) {
         x = e.pageX
         y = e.pageY;
     }, false);
 
-    window.onkeyup = function(e){
+    window.onkeyup = function(e) {
         console.log(x + ' ' + y);
         var elementMouseIsOver =
             document.elementFromPoint(x - window.pageXOffset, y - window.pageYOffset);
