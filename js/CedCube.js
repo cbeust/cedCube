@@ -138,8 +138,6 @@
 
 
     var Cube = function(width, height, formula, startString, nodeId) {
-        var self = this;
-
         this.width = width;
         this.height = height;
         this.formula = formula;
