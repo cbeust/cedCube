@@ -148,7 +148,7 @@ Cube = function(width, height, formula, startString, nodeId) {
 
     this.camera = new THREE.PerspectiveCamera(40, width / height, 1, 10000);
     this.camera.position.set(700, 700, 1200);
-    this.renderer = new THREE.WebGLRenderer();
+    this.renderer = new THREE.WebGLRenderer({antialias: true});
     this.renderer.setSize(width, height);
     this.renderer.setClearColor(0x888888, 1);
     document.getElementById(nodeId).appendChild(this.renderer.domElement);
@@ -157,19 +157,19 @@ Cube = function(width, height, formula, startString, nodeId) {
     this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement)
 
     var W = 200;
-    var CUBIT_SIZE = W - 6;
+    var CUBIT_SIZE = W - 20;
     
     var PI_2 = Math.PI / 2;
     var ANIMATE_INCREMENT = 0.01;
     
     var RGB_MAP = {
-        'w': 0xffffff,
-        'b': 0x0000cc,
-        'y': 0xeeee00,
-        'g': 0x00aa00,
-        'o': 0xff8c00,
-        'r': 0xff0000,
-        '.': 0x666666,
+        'w': 0xf5f5f5,
+        'b': 0x002654,
+        'y': 0xf9d720,
+        'g': 0x77cb3e,
+        'o': 0xf57c08,
+        'r': 0xd62828,
+        '.': 0x999999,
         'X': 0x000000
     }
 
