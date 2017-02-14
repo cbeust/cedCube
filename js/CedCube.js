@@ -1,3 +1,17 @@
+// CedCube.js
+// Rubik's cube visualization and manipulation
+// Cedric Beust <cedric@beust.com>
+// 2/3/2012
+//
+// Use in HTML as follows:
+// <span id="c0" class="CedCube"
+// cc-params="formula=R'F (RUR') F'R,width=200,height=200,startString=yrgrggrgg oowoooooo gyybbbbbb rbbrryrry ggryyyogy bwwwwwwwww">
+// </span>
+//
+// The string contains each face in the order Front, Right, Back, Left, Top, Bottom. You can use spaces in that string
+// and you can use spaces and parentheses in the formula.
+
+
 Axes = {
     X: new THREE.Vector3(1, 0, 0),
     X_NEG: new THREE.Vector3(-1, 0, 0),
@@ -8,6 +22,43 @@ Axes = {
 };
 
 Faces = {
+    M: {
+        key: "m",
+        name: "M",
+        axis: Axes.X,
+        cubits: [ 1, 4, 7, 10, 13, 16, 19, 22, 25],
+        newOrder: [ 0, 19,  2,  3, 10,  5,  6, 1,  8,
+                    9, 22, 11, 12, 13, 14, 15, 4, 17,
+                   18, 25, 20, 21, 16, 23, 24, 7, 26]
+    },
+    M_PRIME: {
+        key: "m'",
+        name: "M'",
+        axis: Axes.X_NEG,
+        cubits: [ 1, 4, 7, 10, 13, 16, 19, 22, 25],
+        newOrder: [ 0, 19, 2, 3, 10, 5, 6, 1, 8,
+            9, 22, 11, 12, 13, 14, 15, 4, 17,
+            18, 25, 20, 21, 16, 23, 24, 7, 26
+        ]
+    },
+    WIDE_RIGHT: {
+        key: "r",
+        name: "r",
+        axis: Axes.X_NEG,
+        cubits: [ 1, 2, 4, 5, 7, 8, 10, 11, 13, 14, 16, 17, 19, 20, 22, 23, 25, 26],
+        newOrder: [0, 7, 8,  3, 16, 17, 6,  25, 26,
+                   9, 4, 5, 12, 13, 14, 15, 22, 23,
+                  18, 1, 2, 21, 10, 11, 24, 19, 20]
+    },
+    WIDE_RIGHT_PRIME: {
+        key: "r'",
+        name: "r'",
+        axis: Axes.X,
+        cubits: [ 1, 2, 4, 5, 7, 8, 10, 11, 13, 14, 16, 17, 19, 20, 22, 23, 25, 26],
+        newOrder: [ 0, 19, 20,  3, 10, 11,  6, 1, 2,
+                    9, 22, 23, 12, 13, 14, 15, 4, 5,
+                   18, 25, 26, 21, 16, 17, 24, 7, 8]
+    },
     FRONT: {
         key: "f",
         name: "F",
@@ -27,7 +78,7 @@ Faces = {
            18, 19, 20, 21, 22, 23, 24, 25, 26]
     },
     RIGHT: {
-        key: "r",
+        key: "R",
         name: "R",
         axis: Axes.X_NEG,
         cubits: [ 2, 5, 8, 11, 14, 17, 20, 23, 26 ],
@@ -120,6 +171,8 @@ Faces = {
 };
 
 var FACES = [
+    Faces.WIDE_RIGHT, Faces.WIDE_RIGHT_PRIME,
+    Faces.M, Faces.M_PRIME,
     Faces.FRONT, Faces.FRONT_PRIME,
     Faces.RIGHT, Faces.RIGHT_PRIME,
     Faces.BACK, Faces.BACK_PRIME,
@@ -547,7 +600,7 @@ Cube = function(width, height, formula, startString, nodeId) {
                 c = c + "'";
                 i = i + 1;
             } 
-            var face = FACE_MAP[c.toUpperCase()];
+            var face = FACE_MAP[c];
             if (face != null) { // could have spaces in the formula
                 result.push(face);
             }
