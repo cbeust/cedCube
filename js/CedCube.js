@@ -41,6 +41,26 @@ Faces = {
             18, 25, 20, 21, 16, 23, 24, 7, 26
         ]
     },
+    WIDE_UP: {
+        key: "u",
+        name: "u",
+        axis: Axes.Y_NEG,
+        cubits: [ 0, 1, 2, 3, 4, 5, 9, 10, 11, 12, 13, 14, 18, 19, 20, 21, 22, 23],
+        newOrder: [ 2, 11, 20, 5, 14, 23, 6, 7, 8,
+            1, 10, 19, 4, 13, 22, 15, 16, 17,
+            0, 9, 18, 3, 12, 21, 24, 25, 26
+        ]
+    },
+    WIDE_UP_PRIME: {
+        key: "u'",
+        name: "u'",
+        axis: Axes.Y,
+        cubits: [ 0, 1, 2, 3, 4, 5, 9, 10, 11, 12, 13, 14, 18, 19, 20, 21, 22, 23],
+        newOrder: [ 18, 9, 0, 21, 12, 3, 6, 7, 8,
+                    19, 10, 1, 22, 13, 4, 15, 16, 17,
+                    20, 11, 2, 23, 14, 5, 24, 25, 26
+            ]
+    },
     WIDE_RIGHT: {
         key: "r",
         name: "r",
@@ -171,6 +191,7 @@ Faces = {
 };
 
 var FACES = [
+    Faces.WIDE_UP, Faces.WIDE_UP_PRIME,
     Faces.WIDE_RIGHT, Faces.WIDE_RIGHT_PRIME,
     Faces.M, Faces.M_PRIME,
     Faces.FRONT, Faces.FRONT_PRIME,
