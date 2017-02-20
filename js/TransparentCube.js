@@ -27,8 +27,33 @@ function createCube(colors) { // front, right, back, left, top, bottom) {
     var back = colors.back ? colors.back : transparent;
 
     var materials = new THREE.MultiMaterial([right, left, top, bottom, front, back]);
-    var geometry = new THREE.BoxGeometry(1000, 1000, 1000);
-    var cube = new THREE.Mesh(geometry, materials);
+
+    for (var i = -1; i <= 1; i++) {
+        for (var j = -1; j <= 1; j++) {
+            for (var k = -1; k <= 1; k++) {
+                console("Creating plane at " + i + " " + j + " " + k);
+                var planeGeometry = new THREE.PlaneBufferGeometry(1000, 1000);
+                var planeMaterials = new THREE.MeshPhongMaterial({
+                    color: 'blue',
+                    side: THREE.DoubleSide
+                });
+                var planeMesh = new THREE.Mesh(planeGeometry, planeMaterials);
+                planeMesh.position.x = 1000*i;
+                planeMesh.position.y = 1000*j;
+                planeMesh.position.z = 1000*k;
+            }
+        }
+    }
+
+    materials.side = THREE.DoubleSide;
+    var planeGeometry = new THREE.PlaneBufferGeometry(1000, 1000, 10, 10);
+    var planeMaterials = new THREE.MeshPhongMaterial({
+        color: 'blue',
+        side: THREE.DoubleSide
+    });
+    // var geometry = new THREE.BoxGeometry(1000, 1000, 1000);
+    var cube = new THREE.Mesh(planeGeometry, planeMaterials);
+    // var cube = new THREE.Mesh(geometry, materials);
     cube.position = new THREE.Vector3(0, 0, 0);
 
     return cube;

@@ -391,7 +391,7 @@ Cube = function(width, height, formula, startString, nodeId) {
     this.getCubitColorsFromArray = function(indices) {
         var colors = "";
         for (var i = 0; i < indices.length; i++) {
-            var ind = indices[i];
+           var ind = indices[i];
             var c;
             if (ind >= 0 && ind < this.startString.length) {
                 c = this.startString[ind];
