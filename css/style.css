@@ -17,10 +17,7 @@ td {
 }
 
 .cc-table {
-	margin-top: 15px;
-	margin-bottom: 15px;
-	margin-left: auto;
-	margin-right: auto;
+	margin: 15px auto;
 }
 
 .cc-interface {
@@ -36,7 +33,7 @@ td {
 }
 
 .cc-formula-text {
-	font-size: 1.8em;
+	font-size: 60px;
 }
 
 .cc-link {
