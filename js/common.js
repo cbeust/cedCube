@@ -19,18 +19,24 @@ function getParam(paramMap, key, def) {
 }
 
 function modifyDom() {
-    var nodes = document.getElementsByClassName('TransparentCube');
+    var nodes = document.getElementsByClassName('CedCube');
     var defaultStartString = "gggggggggrrrrrrrrrbbbbbbbbbooooooooowwwwwwwwwyyyyyyyyy";
     for (var i = 0; i < nodes.length; i++) {
         var node = nodes[i];
         console.log("element: " + node);
         var paramMap = parseParams(node.attributes['cc-params'].textContent);
-        var width = parseInt(getParam(paramMap, 'width', '450'));
-        var height = parseInt(getParam(paramMap, 'height', '350'));
+        var width = parseInt(getParam(paramMap, 'width', '200'));
+        var height = parseInt(getParam(paramMap, 'height', '150'));
         var startString = getParam(paramMap, "startString", defaultStartString);
         startString = startString.replace(new RegExp(" ", 'g'), "");
         var id = node.attributes.id.textContent;
-        var cube = new TransparentCube(width, height, startString, id);
+        var cubeType = getParam(paramMap, "type");
+        var cube;
+        if (cubeType === "Cube") {
+            cube = new Cube(width, height, startString, id);
+        } else {
+            cube = new TransparentCube(width, height, startString, id);
+        }
         cubeMap[id] = cube;
 
         console.log("Created cube " + id + " " + cube.width + " " + cube.height);
@@ -70,8 +76,10 @@ function modifyDom() {
                 div.appendChild(a);
             }
 
-            addLink("playFormula", "Play");
-            addLink("reset", "Reset");
+            if (cube.isAnimated) {
+                addLink("playFormula", "Play");
+                addLink("reset", "Reset");
+            }
         }
     }
 }

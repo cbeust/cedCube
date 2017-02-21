@@ -7,6 +7,8 @@ TransparentCube = function(passedWidth, passedHeight, startString, nodeId) {
     this.width = passedWidth;
     this.height = passedHeight;
 
+    this.isAnimated = false;
+
     var mapping = [
         {x: -1, y: 1, z: 1, front: 0, top: 42, left: 29},
         {x: 0, y: 1, z: 1, front: 1, top: 43},
@@ -128,7 +130,7 @@ TransparentCube = function(passedWidth, passedHeight, startString, nodeId) {
         this.scene.add(this.camera);
 
         // The X axis is red. The Y axis is green. The Z axis is blue.
-        this.scene.add(new THREE.AxisHelper(500));
+        // this.scene.add(new THREE.AxisHelper(500));
         this.controls = new THREE.OrbitControls(this.camera, this.renderer.domElement);
         this.renderer.setSize(this.width, this.height);
 

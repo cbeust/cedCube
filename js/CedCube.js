@@ -212,6 +212,8 @@ for (var i = 0; i < FACES.length; i++) {
 
 
 Cube = function(width, height, formula, startString, nodeId) {
+    this.isAnimated = true;
+
     self = this;
 
     this.width = width;
