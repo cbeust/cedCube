@@ -114,7 +114,6 @@ TransparentCube = function(passedWidth, passedHeight, startString, nodeId) {
     };
 
     this.init = function() {
-        this.renderer = new THREE.WebGLRenderer();
         this.scene = new THREE.Scene();
 
         // camera
@@ -128,6 +127,8 @@ TransparentCube = function(passedWidth, passedHeight, startString, nodeId) {
         // this.camera.position.z = 540;
         this.camera.lookAt(new THREE.Vector3(0, 0, 0));
         this.scene.add(this.camera);
+
+        this.renderer = new THREE.WebGLRenderer({ antialias: true });
 
         // The X axis is red. The Y axis is green. The Z axis is blue.
         // this.scene.add(new THREE.AxisHelper(500));
