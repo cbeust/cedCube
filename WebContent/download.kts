@@ -6,7 +6,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 
-val dir = "/Users/cedricbeust/javascript/CedCube/WebContent/"
+val dir = System.getProperty("user.home") + File.separatorChar + "/javascript/CedCube/WebContent/"
 val file = dir + "f2l.html"
 
     File(file).readLines().filter { it.contains("http://cube.crider.co.uk") }.forEachIndexed { index: Int, line: String ->
