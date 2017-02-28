@@ -1,0 +1,146 @@
+
+
+
+
+
+/*
+     FILE ARCHIVED ON 22:33:50 Nov 2, 2015 AND RETRIEVED FROM THE
+     INTERNET ARCHIVE ON 4:11:29 Feb 28, 2017.
+     JAVASCRIPT APPENDED BY WAYBACK MACHINE, COPYRIGHT INTERNET ARCHIVE.
+
+     ALL OTHER CONTENT MAY ALSO BE PROTECTED BY COPYRIGHT (17 U.S.C.
+     SECTION 108(a)(3)).
+*/
+html, body {
+        background-color: #33343f;
+	color: white;
+	margin: 0;
+	padding: 0;
+	text-align:center;
+
+	font-family: Times, Arial;
+	text-decoration:none;
+	line-height: 24px;
+        
+}
+
+table { margin: auto; } 
+
+
+#top {
+	background-color: black;
+        width: 1000px;
+	margin:0 auto;
+        text-align: center;
+}
+
+
+#NAGLOWEK {
+
+	color: #FF9900;
+	margin: 0px 0px 0px 0px;
+	padding: 15px 25px 15px 25px;
+        font-variant: small-caps;
+
+}
+
+#MENU {
+
+	text-valign: top;
+        font-size: 17px;
+        padding: 20px 0px 20px 0px;
+
+}
+
+#TRESC {
+	background-color: #33343f;
+        margin: 0px 0px 0px 0px;
+	padding: 20px 20px 20px 20px;
+	text-valign: top;
+
+}
+
+#STOPKA {
+
+	color: #FF9900;
+	font-weight: bold;
+	padding: 10px 0px 10px 0px;
+}
+
+
+
+a {
+	color: #007FFF;
+	text-decoration:none;
+        font-weight:bold;
+
+}
+
+a:hover {
+	color:#000;
+	background-color:#FF9900;
+}
+
+
+#MENU span {
+	color:#ff9900;
+	font-weight: bold;
+}
+
+
+
+
+p {
+
+	text-align:justify;
+	text-indent:0px;
+	
+}
+
+
+#NAGLOWEK span {
+	font-weight:bold;
+	color:#FF9900;
+}
+
+
+
+#STOPKA a {
+	text-decoration:none;
+	color: #FF9900;
+}
+
+#STOPKA a:hover {
+	color: #ff9900;
+	background-color:#000000;
+}
+
+h1 {
+	text-weight: bold;
+	font-size: 46px;
+}
+
+h2 {
+
+	text-align:center;
+	padding: 10px 0px 0px 0px;
+}
+
+
+
+span {
+	font-weight:bold;
+	color: #ff9900;
+}
+
+img {
+	border:0;
+}
+
+ul {
+	text-align:left;
+}
+
+ol {
+	text-align:left;
+}
