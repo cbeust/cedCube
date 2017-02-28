@@ -80,7 +80,7 @@ var section0 = {
 };
 
 var section1 = {
-    header: "Corner in wrong slot, Edge in the U layer",
+    header: "Corner in wrong slot, edge in the U layer",
     algorithms: [
         {
             id: "cw-eu-00",
@@ -115,8 +115,74 @@ var section1 = {
 ]
 };
 
-var formulaMap = { "sections": [ section0, section1 ] };
-var template = "{{#sections}}<div><h3>{{header}}</h3>{{#algorithms}} " +
+var section2 = {
+    header: "Corner in wrong slot, edge in the U layer",
+    algorithms: [
+        {
+            id: "ew-cc-00",
+            url: "http://cube.crider.co.uk/visualcube.php?fmt=svg&size=140&r=y30x-30&cc=n&co=15&fo=35&bg=888888&fo=100&fc=tttttttttttttrrrrrtttbbttbbtwwwwwwwwtttooroottttgggggg",
+            formulas: ["F r U2 r' F'", "y R2 U R2 U' R2"]
+        },
+        {
+            id: "ew-cc-01",
+            url: "http://cube.crider.co.uk/visualcube.php?fmt=svg&size=140&r=y30x-30&cc=n&co=15&fo=35&bg=888888&fo=100&fc=ttttttttttttorrtrrttttbbbbtwwtwwwwwwtttootoootttgggggg",
+            formulas: ["F' l' U2 l F", "y R2 U' R2 U R2"]
+        },
+        {
+            id: "ew-cc-02",
+            url: "http://cube.crider.co.uk/visualcube.php?fmt=svg&size=140&r=y30x-30&cc=n&co=15&fo=35&bg=888888&fo=100&fc=tttttttttttttrrbrrtttbbtbbwtwrwwwwwwtttooroottttgggggg",
+            formulas: ["R U L' U2 L R'"]
+        },
+        {
+            id: "ew-cc-03",
+            url: "http://cube.crider.co.uk/visualcube.php?fmt=svg&size=140&r=y30x-30&cc=n&co=15&fo=35&bg=888888&fo=100&fc=ttttttttttttorrtrrttttbbwbtowtwwwwwwtttootoobtttgggggg",
+            formulas: ["L' U' R U2 L R'"]
+        },
+        {
+            id: "ew-cc-04",
+            url: "http://cube.crider.co.uk/visualcube.php?fmt=svg&size=140&r=y30x-30&cc=n&co=15&fo=35&bg=888888&fo=100&fc=tttttttttttttrrwrrtttbbttbrtwwwwwwwwtttooroottttgggggg",
+            formulas: ["R U' L' U' L U' R'", "L' U R U2 L U' R'"]
+        },
+        {
+            id: "ew-cc-05",
+            url: "http://cube.crider.co.uk/visualcube.php?fmt=svg&size=140&r=y30x-30&cc=n&co=15&fo=35&bg=888888&fo=100&fc=ttttttttttttorrtrrttttbbobtbwtwwwwwwtttootoowtttgggggg",
+            formulas: ["R U' L' U2 R' U L", "L' U R U R' U L"]
+        },
+        {
+            id: "ew-cc-06",
+            url: "http://cube.crider.co.uk/visualcube.php?fmt=svg&size=140&r=y30x-30&cc=n&co=15&fo=35&bg=888888&fo=100&fc=tttttttttttttrrrrrtttrbttbbtwwwwwwwwtttooboottttggggg",
+            formulas: ["L u L' u' L'", "y' B R U' R' B'", "F (U r U' r') F"]
+        },
+        {
+            id: "ew-cc-07",
+            url: "http://cube.crider.co.uk/visualcube.php?fmt=svg&size=140&r=y30x-30&cc=n&co=15&fo=35&bg=888888&fo=100&fc=ttttttttttttbrrtrrttttbobbtwwtwwwwwwtttootoootttgggggg",
+            formulas: ["R' u' R u R", "y' F' R' U R F", "F r U r' U' F'"]
+        },
+        {
+            id: "ew-cc-08",
+            url: "http://cube.crider.co.uk/visualcube.php?fmt=svg&size=140&r=y30x-30&cc=n&co=15&fo=35&bg=888888&fo=100&fc=tttttttttttttrrbrrtttrbttbwtwrwwwwwwtttooboottttgggggg",
+            formulas: ["R U' R2 u' R' u R"]
+        },
+        {
+            id: "ew-cc-09",
+            url: "http://cube.crider.co.uk/visualcube.php?fmt=svg&size=140&r=y30x-30&cc=n&co=15&fo=35&bg=888888&fo=100&fc=ttttttttttttbrrtrrttttbowbtowtwwwwwwtttootoobtttgggggg",
+            formulas: ["L' U L2 u L u' L'"]
+        },
+        {
+            id: "ew-cc-10",
+            url: "http://cube.crider.co.uk/visualcube.php?fmt=svg&size=140&r=y30x-30&cc=n&co=15&fo=35&bg=888888&fo=100&fc=tttttttttttttrrwrrtttrbttbrtwbwwwwwwtttooboottttgggggg",
+            formulas: ["F U2 R' F' R2 U R'"]
+        },
+        {
+            id: "ew-cc-11",
+            url: "http://cube.crider.co.uk/visualcube.php?fmt=svg&size=140&r=y30x-30&cc=n&co=15&fo=35&bg=888888&fo=100&fc=ttttttttttttbrrtrrttttboobtbwtwwwwwwtttootoowtttgggggg",
+            formulas: ["F' U2 L F L2 U' L", "y' R' U' R2 U' R' F' U' F"]
+        }
+    ]
+};
+
+var formulaMap = { "sections": [ section0, section1, section2 ] };
+var template = "{{#sections}}<div class='section'><h3>{{header}}</h3>{{#algorithms}} " +
     "<div class='cube1' style='float:left'><img src='pics/{{id}}.svg'/><ul>{{#formulas}}<li>{{.}}</li>{{/formulas}}</ul></div>" +
     "{{/algorithms}}</div>{{/sections}}";
 var render = Mustache.render(template, formulaMap);
