@@ -6,26 +6,29 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.nio.file.StandardCopyOption
 
-val dir = System.getProperty("user.home") + File.separatorChar + "/javascript/CedCube/WebContent/"
-val file = dir + "f2l.html"
+val dir = System.getProperty("user.home") + File.separatorChar + "/javascript/CedCube/"
+val file = dir + "js/f2l.js"
+val host = "http://cube.crider.co.uk/visualcube.php?fmt=svg&size=140&r=y30x-30&cc=n&co=15&fo=35&bg=888888&fo=100&fc="
+var id = ""
+var colors = ""
 
-    File(file).readLines().filter { it.contains("http://cube.crider.co.uk") }.forEachIndexed { index: Int, line: String ->
-        val pairs = line.split(" ").filter { it.contains("=")}.map {
-            it.split("=").let { split ->
-                val other =
-                    if (it.startsWith("src=")) it.substring(it.indexOf('"') + 1, it.lastIndexOf('"') - 1)
-                    else split[1].removeSurrounding("\"")
-                Pair(split[0], other)
-            }
-        }
-        val map = hashMapOf(*pairs.toTypedArray())
-        if (! map.containsKey("id")) {
-            println("Skipping $line")
-        } else {
-            URL(map["src"]).openStream().use { inputStream ->
-                val fileName = Paths.get(dir, "pics", map["id"] + ".svg")
-                Files.copy(inputStream, fileName, StandardCopyOption.REPLACE_EXISTING)
-                println("Created $fileName")
-            }
+fun extract(line: String) : String {
+    val s = line.split(":")
+    return s[1].replace("\"", "").replace(",", "").trim()
+}
+
+File(file).readLines().forEach { line ->
+    if (line.contains("id:")) {
+        id = extract(line)
+    } else if (line.contains("colors:")) {
+        colors = extract(line)
+
+        val url = host + colors
+        val fileName = Paths.get(dir, "pics", id + ".svg")
+        println("Downloading to $fileName: $url")
+        URL(url).openStream().use { inputStream ->
+            Files.copy(inputStream, fileName, StandardCopyOption.REPLACE_EXISTING)
+            println("Created $fileName")
         }
     }
+}

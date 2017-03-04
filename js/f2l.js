@@ -16,7 +16,7 @@ var section0 = {
         },
         {
             id: "cw-ec-03",
-            colors: "tttttttttttttrrtrrtttbbttbbtwwwwwwwwtttooooottttgggggg",
+            colors: "tttttttttttttrrrrrtttbbttbbtwwwwwwwwtttooooottttgggggg",
             formulas: [ "L' U' R U L R'" ]
         },
         {
@@ -25,13 +25,8 @@ var section0 = {
             formulas: [ "y' R' U R2 U2 R2 U R" ]
         },
         {
-            id: "cw-ec-05",
-            colors: "ttttttttttttrrbttwtttbbbbbtwwtwwtwwrtttoooooottttggbgg",
-            formulas: [ "R U' R2 U2 R' U' R'" ]
-        },
-        {
             id: "cw-ec-06",
-            colors: "tttttttttttttrrorrtttbbttbwtwtwwwwwwtttootoootttgggggg",
+            colors: "tttttttttttttrrorrtttbbttbwtwtwwwwwwtttootoottttgggggg",
             formulas: [ "y' R U' R2 U2 R2 U' R'" ]
         },
         {
@@ -105,7 +100,7 @@ var section1 = {
 };
 
 var section2 = {
-    header: "Corner in wrong slot, edge in the U layer",
+    header: "Edge in wrong slot, corner in correct slot",
     algorithms: [
         {
             id: "ew-cc-00",
@@ -171,7 +166,7 @@ var section2 = {
 };
 
 var section3 = {
-    header: "Corner in wrong slot, edge in the U layer",
+    header: "Edge in wrong slot, corner in the U layer",
     algorithms: [
         {
             id: "ew-cu-00",
@@ -207,7 +202,7 @@ var section3 = {
 };
 
 var section4 = {
-    header: "Both corners and edge in wrong slot",
+    header: "Both corner and edge in wrong slot",
     algorithms: [
         {
             id: "ew-cw-00",
