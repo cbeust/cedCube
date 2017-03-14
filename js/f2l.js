@@ -186,7 +186,7 @@ var section3 = {
         {
             id: "ew-cu-03",
             colors: "ttttttttbrtttrrtrrttwrbtbbttwwwwwwwwtttooboootttgggggg",
-            formulas: ["L' F' U' F L"]
+            formulas: ["R' u' R' u R", "L' F' U' F L"]
         },
         {
             id: "ew-cu-04",
@@ -198,6 +198,13 @@ var section3 = {
             colors: "ttttttttrwtttrrtrrttbrbttbttwtwwwwwwtttooboottttgggggg",
             formulas: ["(F U2 F') (R U R')", "y (F' U2 F)(L' U' L)"]
         }
+        // TODO
+        // {
+        //     id: "ew-cu-06",
+        //     colors: "",
+        //     formulas: ["R' F R2 U' R' U2 F'"]
+        // }
+
     ]
 };
 
@@ -413,6 +420,13 @@ var section8 = {
             colors: "tttttttttttttrrtrrtttbbtbbtwwtwwwwwbtttboowootttggrggr",
             formulas: ["L U' L' R U R' F' U' F"]
         }
+        // TODO
+        // {
+        //     id: "both-ws-06",
+        //     colors: "",
+        //     formulas: ["R' F U' F' R"]
+        // },
+
     ]
 };
 
@@ -429,6 +443,19 @@ var section9 = {
             colors: "tttttttbwbtttrrtrrtrrbbtbbtwwtwwwwwwtttooooootttgggggg",
             formulas: ["U2 R2 U2 R' U' R U' R2"]
         }
+        // TODO
+        // {
+        //     id: "int-fl2-02",
+        //     colors: "",
+        //     formulas: ["F' R U R' U' R' F R"]
+        // }
+        // {
+        //     id: "int-fl2-01",
+        //     colors: "",
+        //     formulas: ["F U R U' R' F' R U' R'"]
+        // }
+
+
     ]
 };
 
