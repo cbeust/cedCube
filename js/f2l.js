@@ -419,13 +419,12 @@ var section8 = {
             id: "both-ws-05",
             colors: "tttttttttttttrrtrrtttbbtbbtwwtwwwwwbtttboowootttggrggr",
             formulas: ["L U' L' R U R' F' U' F"]
+        },
+        {
+            id: "both-ws-06",
+            colors: "ttttttwtttttrrtrrtrbbrbbtbbtwwwwwwwtttgoogooottttggtgg",
+            formulas: ["R' F U' F' R"]
         }
-        // TODO
-        // {
-        //     id: "both-ws-06",
-        //     colors: "",
-        //     formulas: ["R' F U' F' R"]
-        // },
 
     ]
 };
@@ -442,18 +441,17 @@ var section9 = {
             id: "int-fl2-01",
             colors: "tttttttbwbtttrrtrrtrrbbtbbtwwtwwwwwwtttooooootttgggggg",
             formulas: ["U2 R2 U2 R' U' R U' R2"]
+        },
+        {
+            id: "int-fl2-02",
+            colors: "tbttttttttttrrrrrrtttbbtbbbwwwwwwwwwtttooooootrtgggggg",
+            formulas: ["F' R U R' U' R' F R"]
+        },
+        {
+            id: "int-fl2-03",
+            colors: "tttttrttwbbttrrtrrttrbbtbbtwwtwwwwwwtttpppppptttgggggg",
+            formulas: ["F U R U' R' F' R U' R'"]
         }
-        // TODO
-        // {
-        //     id: "int-fl2-02",
-        //     colors: "",
-        //     formulas: ["F' R U R' U' R' F R"]
-        // }
-        // {
-        //     id: "int-fl2-01",
-        //     colors: "",
-        //     formulas: ["F U R U' R' F' R U' R'"]
-        // }
 
 
     ]
