@@ -468,7 +468,7 @@ var template = "{{#sections}}" +
     "{{#algorithms}} " +
     "  <div class='cube'>" +
     "    <a href='" + url + "{{colors}}'>" +
-    "      <img src='pics/{{id}}.svg'/>" +
+    "      <img class='cubeImage' align='center' src='pics/{{id}}.svg'/>" +
     "    </a>" +
     "    <ul>{{#formulas}}" +
     "      <li>{{.}}</li>{{/formulas}}" +
