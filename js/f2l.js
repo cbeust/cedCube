@@ -462,8 +462,11 @@ var url = "http://cube.crider.co.uk/visualcube.php?fmt=svg&size=140&r=y30x-30&cc
 var formulaMap = { "sections": [ section0, section1, section2, section3, section4, section5, section6, section7,
     section8, section9 ] };
 
-var template = "{{#sections}}<div class='section'><h3>{{header}}</h3>{{#algorithms}} " +
-    "  <div class='cube1' style='float:left'>" +
+var template = "{{#sections}}" +
+    "<div><h3>{{header}}</h3>" +
+        "<div class='section'>" +
+    "{{#algorithms}} " +
+    "  <div class='cube'>" +
     "    <a href='" + url + "{{colors}}'>" +
     "      <img src='pics/{{id}}.svg'/>" +
     "    </a>" +
@@ -471,6 +474,8 @@ var template = "{{#sections}}<div class='section'><h3>{{header}}</h3>{{#algorith
     "      <li>{{.}}</li>{{/formulas}}" +
     "    </ul>" +
     "</div>" +
-    "{{/algorithms}}</div>{{/sections}}";
+    "{{/algorithms}}</div>" +
+        "</div>" +
+    "{{/sections}}";
 var render = Mustache.render(template, formulaMap);
 document.getElementById("target").innerHTML = render;
