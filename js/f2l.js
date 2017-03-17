@@ -451,7 +451,13 @@ var section9 = {
             id: "int-fl2-03",
             colors: "tttttrttwbbttrrtrrttrbbtbbtwwtwwwwwwtttpppppptttgggggg",
             formulas: ["F U R U' R' F' R U' R'"]
+        },
+        {
+            id: "int-fl2-04",
+            colors: "ttttttttworrbrrtrrttbtbotbttwtwwwwwwtttootoottttgggggg",
+            formulas: ["R U R' U' R U R' F U F'"]
         }
+
 
 
     ]
